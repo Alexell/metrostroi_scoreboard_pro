@@ -8,9 +8,10 @@
 
 MScoreBoard = MScoreBoard or {}
 if SERVER then
-	AddCSLuaFile( "metrostroi_scoreboard/mscoreboard.lua" )
+	AddCSLuaFile("metrostroi_scoreboard/mscoreboard.lua")
+	AddCSLuaFile("metrostroi_scoreboard/player_row.lua")
 else
-	include( "metrostroi_scoreboard/mscoreboard.lua" )
+	include("metrostroi_scoreboard/mscoreboard.lua")
 end
 
 timer.Create("MScoreBoard.Init",2,1,function()
