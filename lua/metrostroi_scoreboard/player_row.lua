@@ -36,13 +36,7 @@ function PlayerRow:Paint(w,h)
 		return
 	end
 	local color = Color(100,100,100,255)
-	if self.Player:Team() == TEAM_CONNECTING then
-		color = Color(100,100,100,155)
-	elseif IsValid(self.Player) then
-		color = team.GetColor(self.Player:Team())
-	end
-	
-	if self.Player == LocalPlayer() then
+	if IsValid(self.Player) then
 		color = team.GetColor(self.Player:Team())
 	end
 	
@@ -122,6 +116,14 @@ function PlayerRow:UpdatePlayerData()
 	if not IsValid(ply) then return end
 	self.Nick:SetText(ply:Nick())
 	self.Team:SetText(team.GetName(ply:Team()))
+	self.Route:SetText(ply:GetNW2String("MSRoute","-"))
+	self.Wags:SetText(ply:GetNW2String("MSWagons","-"))
+	self.Train:SetText(ply:GetNW2String("MSTrainClass","-"))
+	
+	if ScrW() >= 1600 then
+		self.Hours:SetText(math.floor(ply:GetUTimeTotalTime()/3600))
+		self.Ping:SetText(ply:Ping())
+	end
 	
 	if self.Muted == nil or self.Muted ~= self.Player:IsMuted() then
 		self.Muted = self.Player:IsMuted()
