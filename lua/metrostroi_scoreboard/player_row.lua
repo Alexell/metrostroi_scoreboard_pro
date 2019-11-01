@@ -10,6 +10,22 @@ local gradient = surface.GetTextureID("gui/center_gradient")
 local offset = 14 -- смещение от заголовка
 local PlayerRow = {}
 
+local function T(str,...)
+	return string.format(Metrostroi.GetPhrase(str),...)
+end
+
+local function GetTrainName(class)
+	local result = "-"
+	if class ~= "-" then
+		local train_name = T("Entities."..class..".Name")
+		local s1,s2 = string.find(train_name," головной") or string.find(train_name," head")
+		if s1 then
+			result = string.sub(train_name,1,s1-1)..")"
+		end
+	end
+	return result
+end
+
 function PlayerRow:Init()
 	self.AvatarBTN = vgui.Create("DButton",self)
 	self.AvatarBTN.DoClick = function() self.Player:ShowProfile() end
@@ -118,7 +134,7 @@ function PlayerRow:UpdatePlayerData()
 	self.Team:SetText(team.GetName(ply:Team()))
 	self.Route:SetText(ply:GetNW2String("MSRoute","-"))
 	self.Wags:SetText(ply:GetNW2String("MSWagons","-"))
-	self.Train:SetText(ply:GetNW2String("MSTrainClass","-"))
+	self.Train:SetText(GetTrainName(ply:GetNW2String("MSTrainClass","-")))
 	
 	if ScrW() >= 1600 then
 		self.Hours:SetText(math.floor(ply:GetUTimeTotalTime()/3600))
