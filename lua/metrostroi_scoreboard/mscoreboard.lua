@@ -17,7 +17,12 @@ surface.CreateFont("mscoreboardmain",{
 	size = 16,
 	weight = 100
 })
+MScoreBoard.TrainCount = 0
 local gradient = surface.GetTextureID("gui/center_gradient")
+
+net.Receive("MScoreBoard.ServerInfo",function(ln,ply)
+	MScoreBoard.TrainCount = net.ReadInt(6)
+end)
 
 -- поправки на разрешение экрана
 local scrw = 1280 -- для мониторов шириной меньше 1600px
@@ -68,7 +73,6 @@ function Board:Paint(w,h)
 	self.Server:SetText(GetHostName())
 	self.CLTime:SetText("Ваше время: "..os.date("%H:%M:%S",os.time()))
 	self.SVTime:SetText("Время сервера: "..os.date("%H:%M:%S",Metrostroi.GetSyncTime(false))) -- нужно true вроде
-	self.Info:SetText("Игроков: 0 | Вагонов: 0") -- перенести в Update
 	
 	self.Nick:SetText("Ник")
 	self.Group:SetText("Должность")
@@ -76,12 +80,13 @@ function Board:Paint(w,h)
 	self.Wagons:SetText("Вагоны")
 	self.Train:SetText("Состав")
 	self.Station:SetText("Станция/перегон")
+	
 	if ScrW() >= 1600 then
 		self.Hours:SetText("Часы")
 		self.Ping:SetText("Пинг")
 	end
 	
-	self.Pass:SetText("Вы перевезли: 0 пассажиров")
+	
 
 	-- блок для информации подвала
 	draw.RoundedBox(5,10,self:GetTall()-30,self:GetWide() - 20, 30,Color(0,0,0,180))
@@ -158,10 +163,12 @@ function Board:ApplySchemeSettings()
 	self.Wagons:SetFont("mscoreboardtitle")
 	self.Train:SetFont("mscoreboardtitle")
 	self.Station:SetFont("mscoreboardtitle")
+	
 	if ScrW() >= 1600 then
 		self.Hours:SetFont("mscoreboardtitle")
 		self.Ping:SetFont("mscoreboardtitle")
 	end
+	
 	self.Pass:SetFont("ScoreboardDefault")
 end
 
@@ -183,12 +190,15 @@ end
 
 function Board:Update(force)
 	if not self or (not force and not self:IsVisible()) then return end
+	
 	local PlayerList = player.GetAll()	
 	for _,ply in pairs(PlayerList) do
 		if not self:GetPlayerRow(ply) then
 			self:AddPlayerRow(ply)
 		end
 	end
+	self.Info:SetText("Игроков: "..#PlayerList.." | Вагонов: "..MScoreBoard.TrainCount)
+	self.Pass:SetText("Вы перевезли: "..LocalPlayer():Frags().." пассажиров")
 	self:InvalidateLayout()
 end
 vgui.Register("MetrostroiScoreBoard",Board,"Panel")

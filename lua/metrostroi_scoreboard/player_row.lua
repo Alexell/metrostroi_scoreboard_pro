@@ -7,6 +7,7 @@
 ----------------------------------------------------------
 
 local gradient = surface.GetTextureID("gui/center_gradient")
+local offset = 14 -- смещение от заголовка
 local PlayerRow = {}
 
 function PlayerRow:Init()
@@ -62,24 +63,23 @@ function PlayerRow:PerformLayout()
 	self.Nick:SetPos(40,11)
 	self.Nick:SizeToContents()
 
-	-- смещение от заголовка -14
 	if ScrW() >= 1600 then
-		self.Ping:SetPos(self:GetWide()-14-55,11)
+		self.Ping:SetPos(self:GetWide()-offset-55,11)
 		self.Ping:SizeToContents()
-		self.Hours:SetPos(self:GetWide()-14-100,11)
+		self.Hours:SetPos(self:GetWide()-offset-100,11)
 		self.Hours:SizeToContents()
 		
-		self.Station:SetPos(self:GetWide()-14-500,11)
-		self.Train:SetPos(self:GetWide()-14-670,11)
-		self.Wags:SetPos(self:GetWide()-14-730,11)
-		self.Route:SetPos(self:GetWide()-14-800,11)
-		self.Team:SetPos(self:GetWide()-14-1050,11)
+		self.Station:SetPos(self:GetWide()-offset-500,11)
+		self.Train:SetPos(self:GetWide()-offset-670,11)
+		self.Wags:SetPos(self:GetWide()-offset-730,11)
+		self.Route:SetPos(self:GetWide()-offset-800,11)
+		self.Team:SetPos(self:GetWide()-offset-1050,11)
 	else
-		self.Station:SetPos(self:GetWide()-14-350,11)
-		self.Train:SetPos(self:GetWide()-14-520,11)
-		self.Wags:SetPos(self:GetWide()-14-580,11)
-		self.Route:SetPos(self:GetWide()-14-650,11)
-		self.Team:SetPos(self:GetWide()-14-900,11)
+		self.Station:SetPos(self:GetWide()-offset-350,11)
+		self.Train:SetPos(self:GetWide()-offset-520,11)
+		self.Wags:SetPos(self:GetWide()-offset-580,11)
+		self.Route:SetPos(self:GetWide()-offset-650,11)
+		self.Team:SetPos(self:GetWide()-offset-900,11)
 	end
 	self.Station:SizeToContents()
 	self.Train:SizeToContents()
@@ -96,6 +96,7 @@ function PlayerRow:ApplySchemeSettings()
 	self.Wags:SetFont("mscoreboardmain")
 	self.Train:SetFont("mscoreboardmain")
 	self.Station:SetFont("mscoreboardmain")
+	
 	if ScrW() >= 1600 then
 		self.Hours:SetFont("mscoreboardmain")
 		self.Ping:SetFont("mscoreboardmain")
