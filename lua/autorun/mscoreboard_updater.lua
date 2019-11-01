@@ -17,13 +17,22 @@ if SERVER then
 		end
 		
 		for k,v in pairs(ents.GetAll()) do
-		   if v.Base ~= "gmod_subway_base" and not scripted_ents.IsBasedOn(v:GetClass(), "gmod_subway_base") or IsValid(v.FrontTrain) and IsValid(v.RearTrain) then continue end
-		   local ply = v.Owner
+			if v.Base ~= "gmod_subway_base" and not scripted_ents.IsBasedOn(v:GetClass(), "gmod_subway_base") or IsValid(v.FrontTrain) and IsValid(v.RearTrain) then continue end
+			local ply = v.Owner
 			if (v:GetNW2String("RouteNumber") != "") then
 				ply:SetNW2String("MSRoute",v:GetNW2String("RouteNumber"))
 			end
-		   ply:SetNW2String("MSWagons",#v.WagonList)
-		   ply:SetNW2String("MSTrainClass",v:GetClass())
+			ply:SetNW2String("MSWagons",#v.WagonList)
+			ply:SetNW2String("MSTrainClass",v:GetClass())
+		end
+		
+		for k, v in pairs(player.GetAll()) do
+			local train = v:GetTrain()
+			if (IsValid(train) and train.DriverSeat == v:GetVehicle() and train.Owner == v) then
+				v:SetNW2Bool("MSPlayerDriving",true)
+			else
+				v:SetNW2Bool("MSPlayerDriving",false)
+			end
 		end
 	end)
 

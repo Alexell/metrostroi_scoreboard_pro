@@ -7,6 +7,9 @@
 ----------------------------------------------------------
 include("player_row.lua")
 
+local function T(str,...)
+	return string.format(Metrostroi.GetPhrase(str),...)
+end
 surface.CreateFont("mscoreboardtitle",{
 	font = "verdana",
 	size = 16,
@@ -71,22 +74,20 @@ function Board:Paint(w,h)
 	draw.RoundedBox(5,10,100,self:GetWide() - 20, self:GetTall() - 135,Color(0,0,0,180))
 	
 	self.Server:SetText(GetHostName())
-	self.CLTime:SetText("Ваше время: "..os.date("%H:%M:%S",os.time()))
-	self.SVTime:SetText("Время сервера: "..os.date("%H:%M:%S",Metrostroi.GetSyncTime(false))) -- нужно true вроде
+	self.CLTime:SetText(T("MScoreBoard.CLTime")..": "..os.date("%H:%M:%S",os.time()))
+	self.SVTime:SetText(T("MScoreBoard.SVTime")..": "..os.date("%H:%M:%S",Metrostroi.GetSyncTime(false))) -- нужно true вроде
 	
-	self.Nick:SetText("Ник")
-	self.Group:SetText("Должность")
-	self.Route:SetText("Маршрут")
-	self.Wagons:SetText("Вагоны")
-	self.Train:SetText("Состав")
-	self.Station:SetText("Станция/перегон")
+	self.Nick:SetText(T("MScoreBoard.Nick"))
+	self.Group:SetText(T("MScoreBoard.Rank"))
+	self.Route:SetText(T("MScoreBoard.Route"))
+	self.Wagons:SetText(T("MScoreBoard.Wagons"))
+	self.Train:SetText(T("MScoreBoard.Train"))
+	self.Station:SetText(T("MScoreBoard.Station"))
 	
 	if ScrW() >= 1600 then
-		self.Hours:SetText("Часы")
-		self.Ping:SetText("Пинг")
+		self.Hours:SetText(T("MScoreBoard.Hours"))
+		self.Ping:SetText(T("MScoreBoard.Ping"))
 	end
-	
-	
 
 	-- блок для информации подвала
 	draw.RoundedBox(5,10,self:GetTall()-30,self:GetWide() - 20, 30,Color(0,0,0,180))
@@ -197,8 +198,8 @@ function Board:Update(force)
 			self:AddPlayerRow(ply)
 		end
 	end
-	self.Info:SetText("Игроков: "..#PlayerList.." | Вагонов: "..MScoreBoard.TrainCount)
-	self.Pass:SetText("Вы перевезли: "..LocalPlayer():Frags().." пассажиров")
+	self.Info:SetText(T("MScoreBoard.Players")..": "..#PlayerList.." | "..T("MScoreBoard.Wagons")..": "..MScoreBoard.TrainCount)
+	self.Pass:SetText(T("MScoreBoard.TransPass",LocalPlayer():Frags()))
 	self:InvalidateLayout()
 end
 vgui.Register("MetrostroiScoreBoard",Board,"Panel")

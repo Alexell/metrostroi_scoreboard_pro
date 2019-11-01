@@ -153,6 +153,16 @@ function PlayerRow:UpdatePlayerData()
 		self.Ping:SetText(ply:Ping())
 	end
 	
+	if (ply:GetNW2Bool("MSPlayerDriving")) then
+		self.Train:SetTextColor(Color(0,0,0,255))
+	else
+		if ply:GetNW2String("MSTrainClass","-") == "-" then
+			self.Train:SetTextColor(Color(0,0,0,255))
+		else
+			self.Train:SetTextColor(Color(128,128,128))
+		end
+	end
+	
 	if self.Muted == nil or self.Muted ~= self.Player:IsMuted() then
 		self.Muted = self.Player:IsMuted()
 		if self.Muted then
@@ -172,7 +182,7 @@ end
 
 function PlayerRow:Think()
 	if not self.PlayerUpdate or self.PlayerUpdate < CurTime() then
-		self.PlayerUpdate = CurTime() + 0.5
+		self.PlayerUpdate = CurTime() + 1
 		self:UpdatePlayerData()
 	end
 end
