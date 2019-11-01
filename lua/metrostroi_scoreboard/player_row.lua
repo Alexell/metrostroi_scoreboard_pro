@@ -21,7 +21,19 @@ local function GetTrainName(class)
 		local s1,s2 = string.find(train_name," головной") or string.find(train_name," head")
 		if s1 then
 			result = string.sub(train_name,1,s1-1)..")"
+		else
+			result = train_name
 		end
+	end
+	return result
+end
+
+local function FixedRoute(class,route)
+	local result = "-"
+	if (class ~= "-" and route ~= "-") then
+		local rnum = tonumber(route)
+		if table.HasValue({"gmod_subway_81-702","gmod_subway_81-703","gmod_subway_ezh","gmod_subway_ezh3","gmod_subway_ezh3ru1","gmod_subway_81-717_mvm","gmod_subway_81-717_mvm_custom","gmod_subway_81-718","gmod_subway_81-720"},class) then rnum = rnum / 10 end
+		result = rnum
 	end
 	return result
 end
@@ -132,7 +144,7 @@ function PlayerRow:UpdatePlayerData()
 	if not IsValid(ply) then return end
 	self.Nick:SetText(ply:Nick())
 	self.Team:SetText(team.GetName(ply:Team()))
-	self.Route:SetText(ply:GetNW2String("MSRoute","-"))
+	self.Route:SetText(FixedRoute(ply:GetNW2String("MSTrainClass","-"),ply:GetNW2String("MSRoute","-")))
 	self.Wags:SetText(ply:GetNW2String("MSWagons","-"))
 	self.Train:SetText(GetTrainName(ply:GetNW2String("MSTrainClass","-")))
 	
