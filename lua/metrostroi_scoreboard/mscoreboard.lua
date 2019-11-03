@@ -145,7 +145,11 @@ function Board:PerformLayout()
 		self.Route:SetPos(self.Frame:GetWide()-650, 102)
 		self.Group:SetPos(self.Frame:GetWide()-900, 102)
 	end
-
+	
+	if ScrW() == 1920 then
+		self.Group:SetPos(self.Frame:GetWide()-1150,102)
+	end
+	
 	-- лейблы подвала
 	self.Pass:SizeToContents()
 	self.Pass:SetPos(20, self:GetTall()-27)

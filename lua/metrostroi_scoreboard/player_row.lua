@@ -81,7 +81,11 @@ function PlayerRow:PerformLayout()
 	self.AvatarBTN:SetPos(3,3)
 	self.AvatarBTN:SetSize(32,32)
  	self.AvatarIMG:SetSize(32,32)
-	
+	self.Station:SizeToContents()
+	self.Train:SizeToContents()
+	self.Wags:SizeToContents()
+	self.Route:SizeToContents()
+	self.Team:SizeToContents()
 	self.Nick:SetPos(40,11)
 	self.Nick:SizeToContents()
 
@@ -92,22 +96,28 @@ function PlayerRow:PerformLayout()
 		self.Hours:SizeToContents()
 		
 		self.Station:SetPos(self:GetWide()-offset-500,11)
+		self.Station:SetWide(390)
 		self.Train:SetPos(self:GetWide()-offset-670,11)
 		self.Wags:SetPos(self:GetWide()-offset-730,11)
 		self.Route:SetPos(self:GetWide()-offset-800,11)
 		self.Team:SetPos(self:GetWide()-offset-1050,11)
+		self.Team:SetWide(250)
+		self.Nick:SetWide(210)
 	else
 		self.Station:SetPos(self:GetWide()-offset-350,11)
+		self.Station:SetWide(340)
 		self.Train:SetPos(self:GetWide()-offset-520,11)
 		self.Wags:SetPos(self:GetWide()-offset-580,11)
 		self.Route:SetPos(self:GetWide()-offset-650,11)
 		self.Team:SetPos(self:GetWide()-offset-900,11)
+		self.Team:SetWide(250)
+		self.Nick:SetWide(280)
 	end
-	self.Station:SizeToContents()
-	self.Train:SizeToContents()
-	self.Wags:SizeToContents()
-	self.Route:SizeToContents()
-	self.Team:SizeToContents()
+	if ScrW() == 1920 then
+		self.Nick:SetWide(380)
+		self.Team:SetPos(self:GetWide()-offset-1150,11)
+		self.Team:SetWide(340)
+	end
 end
 
 function PlayerRow:ApplySchemeSettings()
@@ -147,7 +157,7 @@ function PlayerRow:UpdatePlayerData()
 	self.Route:SetText(FixedRoute(ply:GetNW2String("MSTrainClass","-"),ply:GetNW2String("MSRoute","-")))
 	self.Wags:SetText(ply:GetNW2String("MSWagons","-"))
 	self.Train:SetText(GetTrainName(ply:GetNW2String("MSTrainClass","-")))
-	
+
 	if ScrW() >= 1600 then
 		self.Hours:SetText(math.floor(ply:GetUTimeTotalTime()/3600))
 		self.Ping:SetText(ply:Ping())
