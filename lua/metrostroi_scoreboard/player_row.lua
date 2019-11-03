@@ -157,6 +157,7 @@ function PlayerRow:UpdatePlayerData()
 	self.Route:SetText(FixedRoute(ply:GetNW2String("MSTrainClass","-"),ply:GetNW2String("MSRoute","-")))
 	self.Wags:SetText(ply:GetNW2String("MSWagons","-"))
 	self.Train:SetText(GetTrainName(ply:GetNW2String("MSTrainClass","-")))
+	self.Station:SetText(ply:GetNW2String("MSStation","-"))
 
 	if ScrW() >= 1600 then
 		self.Hours:SetText(math.floor(ply:GetUTimeTotalTime()/3600))
