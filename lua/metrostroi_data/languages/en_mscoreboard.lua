@@ -16,6 +16,7 @@ MScoreBoard.Route = Route
 MScoreBoard.Wagons = Wag
 MScoreBoard.Train = Train
 MScoreBoard.Station = Station/Line
+MScoreBoard.Line = Line
 MScoreBoard.Hours = Hours
 MScoreBoard.Ping = Ping
 MScoreBoard.Players = Players

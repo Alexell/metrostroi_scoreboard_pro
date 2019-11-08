@@ -39,24 +39,31 @@ if SERVER then
 		end
 	end
 	
-	local function BuildStationInfo(train,name_num)
+	local function BuildStationInfo(train,lang)
 		local prev_st = ""
 		local cur_st = ""
 		local next_st = ""
 		local line = 0
-		local result = ""
-
+		local line_str = ""
+		local station_str = ""
+		local name_num = 1
+		if lang ~= "ru" then name_num = 2 end
 		cur_st = GetStationName(train:ReadCell(49160),name_num)
 		prev_st = GetStationName(train:ReadCell(49162),name_num)
 		next_st = GetStationName(train:ReadCell(49161),name_num)
 		if cur_st == "" then
 			line = train:ReadCell(49167)
-			result = "["..line.." путь] "..prev_st.." => "..next_st
+			station_str = " "..prev_st.." => "..next_st
 		else
 			line = train:ReadCell(49168)
-			result = "["..line.." путь] "..cur_st
+			station_str = " "..cur_st
 		end
-		return result
+		if lang == "ru" then
+			line_str = "["..line.." %s]"
+		else
+			line_str = "[%s "..line.."]"
+		end
+		return line_str..station_str
 	end
 	
 	timer.Create("MScoreBoard.ServerUpdate",3,0,function()
@@ -71,7 +78,6 @@ if SERVER then
 				local ply = train.Owner
 				if not IsValid(ply) then continue end
 				local route = "0"
-				local name_num = 1
 				if train:GetClass() == "gmod_subway_81-722" then
 					route = tostring(train.RouteNumberSys.CurrentRouteNumber)
 				elseif train:GetClass() == "gmod_subway_81-717_6" then
@@ -82,8 +88,7 @@ if SERVER then
 				ply:SetNW2String("MSRoute",route)
 				ply:SetNW2String("MSWagons",#train.WagonList)
 				ply:SetNW2String("MSTrainClass",train:GetClass())
-				if ply:GetNWString("MSLanguage") ~= "ru" then name_num = 2 end
-				ply:SetNW2String("MSStation",BuildStationInfo(train,name_num))
+				ply:SetNW2String("MSStation",BuildStationInfo(train,ply:GetNWString("MSLanguage")))
 			end
 		end
 		for k, v in pairs(player.GetAll()) do
