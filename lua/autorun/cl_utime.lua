@@ -6,9 +6,9 @@ local gpanel
 
 --Now convars!
 local utime_enable = CreateClientConVar( "utime_enable", "1.0", true, false )
-local utime_outsidecolor_r = CreateClientConVar( "utime_outsidecolor_r", "256.0", true, false )
-local utime_outsidecolor_g = CreateClientConVar( "utime_outsidecolor_g", "256.0", true, false )
-local utime_outsidecolor_b = CreateClientConVar( "utime_outsidecolor_b", "256.0", true, false )
+local utime_outsidecolor_r = CreateClientConVar( "utime_outsidecolor_r", "0", true, false )
+local utime_outsidecolor_g = CreateClientConVar( "utime_outsidecolor_g", "0", true, false )
+local utime_outsidecolor_b = CreateClientConVar( "utime_outsidecolor_b", "0", true, false )
 local utime_outsidetext_r = CreateClientConVar( "utime_outsidetext_r", "0.0", true, false )
 local utime_outsidetext_g = CreateClientConVar( "utime_outsidetext_g", "0.0", true, false )
 local utime_outsidetext_b = CreateClientConVar( "utime_outsidetext_b", "0.0", true, false )
@@ -77,13 +77,8 @@ function PANEL:Paint(w,h)
 		local wide = self:GetWide()
 		local tall = self:GetTall()
 
-		local outerColor = Color( utime_outsidecolor_r:GetInt(), utime_outsidecolor_g:GetInt(), utime_outsidecolor_b:GetInt(), 200 )
+		local outerColor = Color( utime_outsidecolor_r:GetInt(), utime_outsidecolor_g:GetInt(), utime_outsidecolor_b:GetInt(), 100 )
 		draw.RoundedBox( 4, 0, 0, wide, tall, outerColor ) -- Draw our base
-
-		surface.SetTexture( texGradient )
-		surface.SetDrawColor( 255, 255, 255, 50 )
-		surface.SetDrawColor( outerColor )
-		surface.DrawTexturedRect( 0, 0, wide, tall )  -- Draw gradient overlay
 
 		if self:GetTall() > self.Small + 4 then -- Draw the white background for another player's info
 				local innerColor = Color( utime_insidecolor_r:GetInt(), utime_insidecolor_g:GetInt(), utime_insidecolor_b:GetInt(), 255 )
@@ -285,8 +280,8 @@ vgui.Register( "UTimePlayerInfo", INFOPANEL, "Panel" )
 
 function resetCvars()
 		RunConsoleCommand( "utime_outsidecolor_r", "0" )
-		RunConsoleCommand( "utime_outsidecolor_g", "150" )
-		RunConsoleCommand( "utime_outsidecolor_b", "245" )
+		RunConsoleCommand( "utime_outsidecolor_g", "0" )
+		RunConsoleCommand( "utime_outsidecolor_b", "0" )
 
 		RunConsoleCommand( "utime_outsidetext_r", "255" )
 		RunConsoleCommand( "utime_outsidetext_g", "255" )
