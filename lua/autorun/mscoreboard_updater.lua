@@ -117,7 +117,7 @@ if SERVER then
 		ply:SetNWString("MSLanguage",net.ReadString())
 	end)
 else
-	timer.Create("MScoreBoard.ClientUpdate",3,0,function()
+	hook.Add("OnEntityCreated","MScoreBoard.GetPlayerLang",function()
 		if not IsValid(LocalPlayer()) then return end
 		if LocalPlayer():GetNW2String("MSLanguage") == "" then
 			net.Start("MScoreBoard.ClientInfo")

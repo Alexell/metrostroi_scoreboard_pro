@@ -6,9 +6,9 @@ local gpanel
 
 --Now convars!
 local utime_enable = CreateClientConVar( "utime_enable", "1.0", true, false )
-local utime_outsidecolor_r = CreateClientConVar( "utime_outsidecolor_r", "0", true, false )
-local utime_outsidecolor_g = CreateClientConVar( "utime_outsidecolor_g", "0", true, false )
-local utime_outsidecolor_b = CreateClientConVar( "utime_outsidecolor_b", "0", true, false )
+local utime_outsidecolor_r = CreateClientConVar( "utime_outsidecolor_r", "256", true, false )
+local utime_outsidecolor_g = CreateClientConVar( "utime_outsidecolor_g", "256", true, false )
+local utime_outsidecolor_b = CreateClientConVar( "utime_outsidecolor_b", "256", true, false )
 local utime_outsidetext_r = CreateClientConVar( "utime_outsidetext_r", "0.0", true, false )
 local utime_outsidetext_g = CreateClientConVar( "utime_outsidetext_g", "0.0", true, false )
 local utime_outsidetext_b = CreateClientConVar( "utime_outsidetext_b", "0.0", true, false )
