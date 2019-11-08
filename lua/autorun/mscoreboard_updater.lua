@@ -8,26 +8,47 @@
 
 if SERVER then
 	util.AddNetworkString("MScoreBoard.ServerInfo")
+	util.AddNetworkString("MScoreBoard.ClientInfo")
 	
+	local TrainList = {
+		"gmod_subway_81-502",
+		"gmod_subway_81-702",
+		"gmod_subway_81-703",
+		"gmod_subway_ezh",
+		"gmod_subway_ezh3",
+		"gmod_subway_ezh3ru1",
+		"gmod_subway_81-717_mvm",
+		"gmod_subway_81-717_lvz",
+		"gmod_subway_81-717_6",
+		"gmod_subway_81-718",
+		"gmod_subway_81-720",
+		"gmod_subway_81-722",
+		"gmod_subway_81-760",
+		"gmod_subway_81-760a"
+	}
+
 	local function GetStationName(st_id,name_num)
 		if Metrostroi.StationConfigurations[st_id] then
-			return Metrostroi.StationConfigurations[st_id].names[name_num]
+			if Metrostroi.StationConfigurations[st_id].names[name_num] then
+				return Metrostroi.StationConfigurations[st_id].names[name_num]
+			else
+				return Metrostroi.StationConfigurations[st_id].names[1]
+			end
 		else
 			return ""
 		end
 	end
 	
-	local function BuildStationInfo(train)
+	local function BuildStationInfo(train,name_num)
 		local prev_st = ""
 		local cur_st = ""
 		local next_st = ""
 		local line = 0
 		local result = ""
-		
-		-- TODO: нужно сделать так чтобы name_num был 1 для языка ru и другим для других языков. Свериться со всеми StationConfigurations карт.
-		cur_st = GetStationName(train:ReadCell(49160),1)
-		prev_st = GetStationName(train:ReadCell(49162),1)
-		next_st = GetStationName(train:ReadCell(49161),1)
+
+		cur_st = GetStationName(train:ReadCell(49160),name_num)
+		prev_st = GetStationName(train:ReadCell(49162),name_num)
+		next_st = GetStationName(train:ReadCell(49161),name_num)
 		if cur_st == "" then
 			line = train:ReadCell(49167)
 			result = "["..line.." путь] "..prev_st.." => "..next_st
@@ -45,18 +66,26 @@ if SERVER then
 				net.WriteInt(TrainCount,6)
 			net.Broadcast()
 		end
-		
-		for k,v in pairs(ents.GetAll()) do
-			if v.Base ~= "gmod_subway_base" and not scripted_ents.IsBasedOn(v:GetClass(), "gmod_subway_base") or IsValid(v.FrontTrain) and IsValid(v.RearTrain) then continue end
-			local ply = v.Owner
-			if (v:GetNW2String("RouteNumber") != "") then
-				ply:SetNW2String("MSRoute",v:GetNW2String("RouteNumber"))
+		for k, v in pairs(TrainList) do
+			for _,train in pairs(ents.FindByClass(v)) do
+				local ply = train.Owner
+				if not IsValid(ply) then continue end
+				local route = "0"
+				local name_num = 1
+				if train:GetClass() == "gmod_subway_81-722" then
+					route = tostring(train.RouteNumberSys.CurrentRouteNumber)
+				elseif train:GetClass() == "gmod_subway_81-717_6" then
+					route = tostring(train.ASNP.RouteNumber)
+				else
+					route = train.RouteNumber.RouteNumber
+				end
+				ply:SetNW2String("MSRoute",route)
+				ply:SetNW2String("MSWagons",#train.WagonList)
+				ply:SetNW2String("MSTrainClass",train:GetClass())
+				if ply:GetNWString("MSLanguage") ~= "ru" then name_num = 2 end
+				ply:SetNW2String("MSStation",BuildStationInfo(train,name_num))
 			end
-			ply:SetNW2String("MSWagons",#v.WagonList)
-			ply:SetNW2String("MSTrainClass",v:GetClass())
-			ply:SetNW2String("MSStation",BuildStationInfo(v))
 		end
-		
 		for k, v in pairs(player.GetAll()) do
 			local train = v:GetTrain()
 			if (IsValid(train) and train.DriverSeat == v:GetVehicle() and train.Owner == v) then
@@ -75,6 +104,20 @@ if SERVER then
 			ply:SetNW2String("MSWagons","-")
 			ply:SetNW2String("MSTrainClass","-")
 			ply:SetNW2String("MSStation","-")
+		end
+	end)
+
+	net.Receive("MScoreBoard.ClientInfo",function(ln,ply)
+		if not IsValid(ply) then return end
+		ply:SetNWString("MSLanguage",net.ReadString())
+	end)
+else
+	timer.Create("MScoreBoard.ClientUpdate",3,0,function()
+		if not IsValid(LocalPlayer()) then return end
+		if LocalPlayer():GetNW2String("MSLanguage") == "" then
+			net.Start("MScoreBoard.ClientInfo")
+				net.WriteString(GetConVarString("metrostroi_language"))
+			net.SendToServer()
 		end
 	end)
 end
