@@ -132,17 +132,17 @@ function Board:PerformLayout()
 
 	if ScrW() >= 1600 then
 		self.Ping:SetPos(self.Frame:GetWide()-55, 102)
-		self.Hours:SetPos(self.Frame:GetWide()-100, 102)
+		self.Hours:SetPos(self.Frame:GetWide()-105, 102)
 		self.Station:SetPos(self.Frame:GetWide()-500, 102)
 		self.Train:SetPos(self.Frame:GetWide()-670, 102)
-		self.Wagons:SetPos(self.Frame:GetWide()-730, 102)
-		self.Route:SetPos(self.Frame:GetWide()-800, 102)
+		self.Wagons:SetPos(self.Frame:GetWide()-735, 102)
+		self.Route:SetPos(self.Frame:GetWide()-805, 102)
 		self.Group:SetPos(self.Frame:GetWide()-1050, 102)
 	else
 		self.Station:SetPos(self.Frame:GetWide()-350, 102)
 		self.Train:SetPos(self.Frame:GetWide()-520, 102)
-		self.Wagons:SetPos(self.Frame:GetWide()-580, 102)
-		self.Route:SetPos(self.Frame:GetWide()-650, 102)
+		self.Wagons:SetPos(self.Frame:GetWide()-585, 102)
+		self.Route:SetPos(self.Frame:GetWide()-655, 102)
 		self.Group:SetPos(self.Frame:GetWide()-900, 102)
 	end
 	
