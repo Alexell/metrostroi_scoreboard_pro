@@ -75,7 +75,7 @@ function Board:Paint(w,h)
 	
 	self.Server:SetText(GetHostName())
 	self.CLTime:SetText(T("MScoreBoard.CLTime")..": "..os.date("%H:%M:%S",os.time()))
-	self.SVTime:SetText(T("MScoreBoard.SVTime")..": "..os.date("%H:%M:%S",Metrostroi.GetSyncTime(false))) -- нужно true вроде
+	self.SVTime:SetText(T("MScoreBoard.SVTime")..": "..os.date("!%H:%M:%S",Metrostroi.GetSyncTime()))
 	
 	self.Nick:SetText(T("MScoreBoard.Nick"))
 	self.Group:SetText(T("MScoreBoard.Rank"))
