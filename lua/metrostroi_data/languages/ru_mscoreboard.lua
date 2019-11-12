@@ -19,7 +19,17 @@ MScoreBoard.Station = Станция/перегон
 MScoreBoard.Line = путь
 MScoreBoard.Hours = Часы
 MScoreBoard.Ping = Пинг
-MScoreBoard.Players = Игроков
+MScoreBoard.Players = Игроки
 MScoreBoard.TransPass = Вы перевезли: %s пассажиров
+
+#ClientPanel
+MSCP.Colors = Цвета
+MSCP.Header1 = Фон шапки
+MSCP.Header2 = Текст шапки
+MSCP.Frame1 = Задний фон таблицы игроков
+MSCP.Frame2 = Текст заголовка таблицы игроков
+MSCP.Frame3 = Передний фон таблицы игроков
+MSCP.Footer1 = Фон подвала
+MSCP.Footer2 = Текст подвала
 
 ]]

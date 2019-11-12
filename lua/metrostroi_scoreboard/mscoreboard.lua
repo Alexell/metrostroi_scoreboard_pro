@@ -23,6 +23,80 @@ surface.CreateFont("mscoreboardmain",{
 MScoreBoard.TrainCount = 0
 local gradient = surface.GetTextureID("gui/center_gradient")
 
+-- Цветовая схема
+local ms_head_backcolor_r = CreateClientConVar("ms_head_backcolor_r","256",true,false)
+local ms_head_backcolor_g = CreateClientConVar("ms_head_backcolor_g","256",true,false)
+local ms_head_backcolor_b = CreateClientConVar("ms_head_backcolor_b","256",true,false)
+local ms_head_backcolor_a = CreateClientConVar("ms_head_backcolor_a","256",true,false)
+local ms_head_fontcolor_r = CreateClientConVar("ms_head_fontcolor_r","256",true,false)
+local ms_head_fontcolor_g = CreateClientConVar("ms_head_fontcolor_g","256",true,false)
+local ms_head_fontcolor_b = CreateClientConVar("ms_head_fontcolor_b","256",true,false)
+local ms_center_backcolor_r = CreateClientConVar("ms_center_backcolor_r","256",true,false)
+local ms_center_backcolor_g = CreateClientConVar("ms_center_backcolor_g","256",true,false)
+local ms_center_backcolor_b = CreateClientConVar("ms_center_backcolor_b","256",true,false)
+local ms_center_backcolor_a = CreateClientConVar("ms_center_backcolor_a","256",true,false)
+local ms_center_fontcolor_r = CreateClientConVar("ms_center_fontcolor_r","256",true,false)
+local ms_center_fontcolor_g = CreateClientConVar("ms_center_fontcolor_g","256",true,false)
+local ms_center_fontcolor_b = CreateClientConVar("ms_center_fontcolor_b","256",true,false)
+local ms_center_framecolor_r = CreateClientConVar("ms_center_framecolor_r","256",true,false)
+local ms_center_framecolor_g = CreateClientConVar("ms_center_framecolor_g","256",true,false)
+local ms_center_framecolor_b = CreateClientConVar("ms_center_framecolor_b","256",true,false)
+local ms_center_framecolor_a = CreateClientConVar("ms_center_framecolor_a","256",true,false)
+local ms_foot_backcolor_r = CreateClientConVar("ms_foot_backcolor_r","256",true,false)
+local ms_foot_backcolor_g = CreateClientConVar("ms_foot_backcolor_g","256",true,false)
+local ms_foot_backcolor_b = CreateClientConVar("ms_foot_backcolor_b","256",true,false)
+local ms_foot_backcolor_a = CreateClientConVar("ms_foot_backcolor_a","256",true,false)
+local ms_foot_fontcolor_r = CreateClientConVar("ms_foot_fontcolor_r","256",true,false)
+local ms_foot_fontcolor_g = CreateClientConVar("ms_foot_fontcolor_g","256",true,false)
+local ms_foot_fontcolor_b = CreateClientConVar("ms_foot_fontcolor_b","256",true,false)
+
+-- Цвета по умолчанию
+function MScoreBoard.ResetColors()
+	RunConsoleCommand("ms_head_backcolor_r","0")
+	RunConsoleCommand("ms_head_backcolor_g","0")
+	RunConsoleCommand("ms_head_backcolor_b","0")
+	RunConsoleCommand("ms_head_backcolor_a","180")
+	RunConsoleCommand("ms_head_fontcolor_r","255")
+	RunConsoleCommand("ms_head_fontcolor_g","255")
+	RunConsoleCommand("ms_head_fontcolor_b","255")
+	RunConsoleCommand("ms_center_backcolor_r","0")
+	RunConsoleCommand("ms_center_backcolor_g","0")
+	RunConsoleCommand("ms_center_backcolor_b","0")
+	RunConsoleCommand("ms_center_backcolor_a","180")
+	RunConsoleCommand("ms_center_fontcolor_r","255")
+	RunConsoleCommand("ms_center_fontcolor_g","255")
+	RunConsoleCommand("ms_center_fontcolor_b","255")
+	RunConsoleCommand("ms_center_framecolor_r","204")
+	RunConsoleCommand("ms_center_framecolor_g","204")
+	RunConsoleCommand("ms_center_framecolor_b","204")
+	RunConsoleCommand("ms_center_framecolor_a","100")
+	RunConsoleCommand("ms_foot_backcolor_r","0")
+	RunConsoleCommand("ms_foot_backcolor_g","0")
+	RunConsoleCommand("ms_foot_backcolor_b","0")
+	RunConsoleCommand("ms_foot_backcolor_a","180")
+	RunConsoleCommand("ms_foot_backcolor_a","180")
+	RunConsoleCommand("ms_foot_fontcolor_r","255")
+	RunConsoleCommand("ms_foot_fontcolor_g","255")
+	RunConsoleCommand("ms_foot_fontcolor_b","255")
+end
+concommand.Add("mscoreboard_reset",MScoreBoard.ResetColors)
+
+local function MSPanel(panel)
+	panel:ClearControls()
+	panel:Help("Metrostroi Scoreboard Pro (by Alexell)")
+	panel:AddControl("Color",{Label=T("MSCP.Header1"),Red="ms_head_backcolor_r",Green="ms_head_backcolor_g",Blue="ms_head_backcolor_b",Alpha="ms_head_backcolor_a",ShowAlpha="1",Multiplier="255"})
+	panel:AddControl("Color",{Label=T("MSCP.Header2"),Red="ms_head_fontcolor_r",Green="ms_head_fontcolor_g",Blue="ms_head_fontcolor_b",ShowAlpha="0",Multiplier="255"})
+	panel:AddControl("Color",{Label=T("MSCP.Frame1"),Red="ms_center_backcolor_r",Green="ms_center_backcolor_g",Blue="ms_center_backcolor_b",Alpha="ms_center_backcolor_a",ShowAlpha="1",Multiplier="255"})
+	panel:AddControl("Color",{Label=T("MSCP.Frame2"),Red="ms_center_fontcolor_r",Green="ms_center_fontcolor_g",Blue="ms_center_fontcolor_b",ShowAlpha="0",Multiplier="255"})
+	panel:AddControl("Color",{Label=T("MSCP.Frame3"),Red="ms_center_framecolor_r",Green="ms_center_framecolor_g",Blue="ms_center_framecolor_b",Alpha="ms_center_framecolor_a",ShowAlpha="1",Multiplier="255"})
+	panel:AddControl("Color",{Label=T("MSCP.Footer1"),Red="ms_foot_backcolor_r",Green="ms_foot_backcolor_g",Blue="ms_foot_backcolor_b",Alpha="ms_foot_backcolor_a",ShowAlpha="1",Multiplier="255"})
+	panel:AddControl("Color",{Label=T("MSCP.Footer2"),Red="ms_foot_fontcolor_r",Green="ms_foot_fontcolor_g",Blue="ms_foot_fontcolor_b",ShowAlpha="0",Multiplier="255"})
+end
+
+hook.Add("PopulateToolMenu", "MScoreBoardClientPanel", function()
+    spawnmenu.AddToolMenuOption("Utilities","MScoreboard Pro","MSClientPanel",T("MSCP.Colors"),"","",MSPanel)
+end)
+
 net.Receive("MScoreBoard.ServerInfo",function(ln,ply)
 	MScoreBoard.TrainCount = net.ReadInt(6)
 end)
@@ -39,7 +113,6 @@ end
 local Board = {}
 
 function Board:Init()
-	
 	self.Server = vgui.Create("DLabel",self)
 	self.CLTime = vgui.Create("DLabel",self)
 	self.SVTime = vgui.Create("DLabel",self)
@@ -64,14 +137,17 @@ function Board:Init()
 end
 
 function Board:Paint(w,h)
+	local headcolor = Color(ms_head_backcolor_r:GetInt(),ms_head_backcolor_g:GetInt(),ms_head_backcolor_b:GetInt(),ms_head_backcolor_a:GetInt())
+	
 	-- блок для названия сервера
-	draw.RoundedBox(10,10,10,self:GetWide() - 20, 50 ,Color(0,0,0,180))
+	draw.RoundedBox(10,10,10,self:GetWide() - 20, 50 ,headcolor)
 	
 	-- блок для информации шапки
-	draw.RoundedBox(5,10,65,self:GetWide() - 20, 30,Color(0,0,0,180))
+	draw.RoundedBox(5,10,65,self:GetWide() - 20, 30,headcolor)
 	
 	-- блок для игроков
-	draw.RoundedBox(5,10,100,self:GetWide() - 20, self:GetTall() - 135,Color(0,0,0,180))
+	local centercolor = Color(ms_center_backcolor_r:GetInt(),ms_center_backcolor_g:GetInt(),ms_center_backcolor_b:GetInt(),ms_center_backcolor_a:GetInt())
+	draw.RoundedBox(5,10,100,self:GetWide() - 20, self:GetTall() - 135,centercolor)
 	
 	self.Server:SetText(GetHostName())
 	self.CLTime:SetText(T("MScoreBoard.CLTime")..": "..os.date("%H:%M:%S",os.time()))
@@ -90,12 +166,11 @@ function Board:Paint(w,h)
 	end
 
 	-- блок для информации подвала
-	draw.RoundedBox(5,10,self:GetTall()-30,self:GetWide() - 20, 30,Color(0,0,0,180))
+	local footcolor = Color(ms_foot_backcolor_r:GetInt(),ms_foot_backcolor_g:GetInt(),ms_foot_backcolor_b:GetInt(),ms_foot_backcolor_a:GetInt())
+	draw.RoundedBox(5,10,self:GetTall()-30,self:GetWide() - 20, 30,footcolor)
 end
 
 function Board:PerformLayout()
-
-
 	self:SetSize(scrw,scrh)
 	self:SetPos((ScrW() - self:GetWide()) / 2, (ScrH() - self:GetTall()) / 2)
 	
@@ -193,20 +268,56 @@ function Board:GetPlayerRow(ply)
 	return self.PlayerRows[ply]
 end
 
-function Board:Update(force)
-	if not self or (not force and not self:IsVisible()) then return end
+function Board:Update()
+	if not self or not self:IsVisible() then return end
 	
-	local PlayerList = player.GetAll()	
+	local PlayerList = player.GetAll()
+	table.sort(PlayerList,function(a,b)
+		if a:Team() == TEAM_CONNECTING then return false end
+		if b:Team() == TEAM_CONNECTING then return true end
+		if a:Team() ~= b:Team() then
+			return a:Team() < b:Team()
+		end
+	end)
+	
 	for _,ply in pairs(PlayerList) do
 		if not self:GetPlayerRow(ply) then
 			self:AddPlayerRow(ply)
 		end
 	end
+
+	local headtextcolor = Color(ms_head_fontcolor_r:GetInt(),ms_head_fontcolor_g:GetInt(),ms_head_fontcolor_b:GetInt(),255)
+	self.Server:SetTextColor(headtextcolor)
+	self.CLTime:SetTextColor(headtextcolor)
+	self.SVTime:SetTextColor(headtextcolor)
+	self.Info:SetTextColor(headtextcolor)
+	
+	local centertextcolor = Color(ms_center_fontcolor_r:GetInt(),ms_center_fontcolor_g:GetInt(),ms_center_fontcolor_b:GetInt(),255)
+	self.Nick:SetTextColor(centertextcolor)
+	self.Group:SetTextColor(centertextcolor)
+	self.Route:SetTextColor(centertextcolor)
+	self.Wagons:SetTextColor(centertextcolor)
+	self.Train:SetTextColor(centertextcolor)
+	self.Station:SetTextColor(centertextcolor)
+	
+	local foottextcolor = Color(ms_foot_fontcolor_r:GetInt(),ms_foot_fontcolor_g:GetInt(),ms_foot_fontcolor_b:GetInt(),255)
+	self.Pass:SetTextColor(foottextcolor)
+	
+	if ScrW() >= 1600 then
+		self.Hours:SetTextColor(centertextcolor)
+		self.Ping:SetTextColor(centertextcolor)
+	end
+
 	self.Info:SetText(T("MScoreBoard.Players")..": "..#PlayerList.." | "..T("MScoreBoard.Wagons")..": "..MScoreBoard.TrainCount)
 	self.Pass:SetText(T("MScoreBoard.TransPass",LocalPlayer():Frags()))
 	self:InvalidateLayout()
 end
 vgui.Register("MetrostroiScoreBoard",Board,"Panel")
+timer.Create("MScoreBoardThink",0.6,0,function()
+	if MScoreBoard.Panel then
+		MScoreBoard.Panel:Update()
+	end
+end)
 
 -- ФРЕЙМ ИГРОКОВ --
 local Frame = {}
@@ -217,7 +328,8 @@ end
 
 function Frame:Paint(w,h)
 	-- светлый блок
-	draw.RoundedBox(5,0,0,w,h,Color(204,204,204,100))
+	local framecolor = Color(ms_center_framecolor_r:GetInt(),ms_center_framecolor_g:GetInt(),ms_center_framecolor_b:GetInt(),ms_center_framecolor_a:GetInt())
+	draw.RoundedBox(5,0,0,w,h,framecolor)
 	
 	-- градиент поверх
 	surface.SetTexture(gradient)
@@ -240,9 +352,11 @@ function MScoreBoard:Show()
 		MScoreBoard.Panel = nil
 	end
 	MScoreBoard.Panel = vgui.Create("MetrostroiScoreBoard")
-	MScoreBoard.Panel:Update(true)
+	MScoreBoard.Panel:Update()
 	gui.EnableScreenClicker(true)
-	
+
+	if ms_head_backcolor_r:GetInt() == 256 then MScoreBoard.ResetColors() end
+
 	function MScoreBoard:Hide()
 		MScoreBoard.Panel:Remove()
 		MScoreBoard.Panel = nil

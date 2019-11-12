@@ -22,4 +22,14 @@ MScoreBoard.Ping = Ping
 MScoreBoard.Players = Players
 MScoreBoard.TransPass = You have transported: %s passengers
 
+#ClientPanel
+MSCP.Colors = Colors
+MSCP.Header1 = Header background
+MSCP.Header2 = Header text
+MSCP.Frame1 = Player frame background
+MSCP.Frame2 = Player frame title
+MSCP.Frame3 = Player frame foreground
+MSCP.Footer1 = Footer background
+MSCP.Footer2 = Footer text
+
 ]]

@@ -128,14 +128,14 @@ if SERVER then
 		else
 			prev_st = GetStationName(train:ReadCell(49162),name_num)
 			next_st = GetStationName(train:ReadCell(49161),name_num)
-			line = train:ReadCell(49167)
 			if (prev_st ~= "" and next_st ~= "") then
+				line = train:ReadCell(49167)
 				station_str = prev_st.." - "..next_st
 			else
 				station_str = GetTrainLoc(train,name_num)
 			end
 		end
-		if line ~= 0 and station_str ~= "N/A" then
+		if line ~= 0 then
 			if lang == "ru" then
 				line_str = "["..line.." %s] "
 			else
