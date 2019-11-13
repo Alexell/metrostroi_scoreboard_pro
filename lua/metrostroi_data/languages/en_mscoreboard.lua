@@ -31,5 +31,6 @@ MSCP.Frame2 = Player frame title
 MSCP.Frame3 = Player frame foreground
 MSCP.Footer1 = Footer background
 MSCP.Footer2 = Footer text
+MSCP.Reset = Reset colors to default
 
 ]]

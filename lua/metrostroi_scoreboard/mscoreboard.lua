@@ -91,6 +91,7 @@ local function MSPanel(panel)
 	panel:AddControl("Color",{Label=T("MSCP.Frame3"),Red="ms_center_framecolor_r",Green="ms_center_framecolor_g",Blue="ms_center_framecolor_b",Alpha="ms_center_framecolor_a",ShowAlpha="1",Multiplier="255"})
 	panel:AddControl("Color",{Label=T("MSCP.Footer1"),Red="ms_foot_backcolor_r",Green="ms_foot_backcolor_g",Blue="ms_foot_backcolor_b",Alpha="ms_foot_backcolor_a",ShowAlpha="1",Multiplier="255"})
 	panel:AddControl("Color",{Label=T("MSCP.Footer2"),Red="ms_foot_fontcolor_r",Green="ms_foot_fontcolor_g",Blue="ms_foot_fontcolor_b",ShowAlpha="0",Multiplier="255"})
+	panel:AddControl("Button",{Text="Reset",Label=T("MSCP.Reset"),Command="mscoreboard_reset"})
 end
 
 hook.Add("PopulateToolMenu", "MScoreBoardClientPanel", function()
