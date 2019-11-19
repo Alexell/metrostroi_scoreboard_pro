@@ -12,6 +12,7 @@ if SERVER then
 	
 	local TrainList = {
 		"gmod_subway_81-502",
+		"gmod_subway_81-540",
 		"gmod_subway_81-702",
 		"gmod_subway_81-703",
 		"gmod_subway_ezh",
