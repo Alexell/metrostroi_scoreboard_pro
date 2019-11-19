@@ -1,5 +1,5 @@
 return [[
-[ko]
+[kr]
 
 AuthorTextMScoreBoard = Archerity (STEAM_0:1:40909285)
 
