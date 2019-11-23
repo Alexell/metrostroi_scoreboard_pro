@@ -161,7 +161,18 @@ if SERVER then
 				if not IsValid(ply) then continue end
 				local route = "0"
 				if train:GetClass() == "gmod_subway_81-540_2" then
-					route = "0" -- NEED FIX
+					local rtype = train:GetNW2String("routenumber_type")
+					if rtype == "m" then
+						route = string.sub(train.RouteNumbera.RouteNumbera,1,2)
+					end
+					if rtype == "p" then
+						route = train.RouteNumbera.RouteNumbera
+					end
+					if rtype == "d" then
+						if train.RouteNumberSys then
+							route = tostring(train.RouteNumberSys.RouteNumber)
+						end
+					end
 				elseif train:GetClass() == "gmod_subway_81-722" then
 					route = tostring(train.RouteNumberSys.CurrentRouteNumber)
 				elseif train:GetClass() == "gmod_subway_81-717_6" then
