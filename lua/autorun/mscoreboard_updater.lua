@@ -13,11 +13,13 @@ if SERVER then
 	local TrainList = {
 		"gmod_subway_81-502",
 		"gmod_subway_81-540",
+		"gmod_subway_81-540_2",
 		"gmod_subway_81-702",
 		"gmod_subway_81-703",
 		"gmod_subway_ezh",
 		"gmod_subway_ezh3",
 		"gmod_subway_ezh3ru1",
+		"gmod_subway_81-717_1",
 		"gmod_subway_81-717_mvm",
 		"gmod_subway_81-717_lvz",
 		"gmod_subway_81-717_6",
@@ -158,7 +160,9 @@ if SERVER then
 				local ply = train.Owner
 				if not IsValid(ply) then continue end
 				local route = "0"
-				if train:GetClass() == "gmod_subway_81-722" then
+				if train:GetClass() == "gmod_subway_81-540_2" then
+					route = "0" -- NEED FIX
+				elseif train:GetClass() == "gmod_subway_81-722" then
 					route = tostring(train.RouteNumberSys.CurrentRouteNumber)
 				elseif train:GetClass() == "gmod_subway_81-717_6" then
 					route = tostring(train.ASNP.RouteNumber)
