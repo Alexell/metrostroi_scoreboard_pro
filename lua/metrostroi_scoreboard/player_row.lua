@@ -32,7 +32,7 @@ local function FixedRoute(class,route)
 	local result = "-"
 	if (class ~= "-" and route ~= "-") then
 		local rnum = tonumber(route)
-		if table.HasValue({"gmod_subway_81-702","gmod_subway_81-703","gmod_subway_ezh","gmod_subway_ezh3","gmod_subway_ezh3ru1","gmod_subway_81-717_mvm","gmod_subway_81-717_mvm_custom","gmod_subway_81-718","gmod_subway_81-720"},class) then rnum = rnum / 10 end
+		if table.HasValue({"gmod_subway_81-702","gmod_subway_81-703","gmod_subway_ezh","gmod_subway_ezh3","gmod_subway_ezh3ru1","gmod_subway_81-717_mvm","gmod_subway_81-718","gmod_subway_81-720"},class) then rnum = rnum / 10 end
 		result = rnum
 	end
 	return result
