@@ -26,6 +26,7 @@ if SERVER then
 		"gmod_subway_81-718",
 		"gmod_subway_81-720",
 		"gmod_subway_81-722",
+		"gmod_subway_81-722_3",
 		"gmod_subway_81-760",
 		"gmod_subway_81-760a"
 	}
@@ -173,7 +174,7 @@ if SERVER then
 							route = tostring(train.RouteNumberSys.RouteNumber)
 						end
 					end
-				elseif train:GetClass() == "gmod_subway_81-722" then
+				elseif train:GetClass() == "gmod_subway_81-722" or train:GetClass() == "gmod_subway_81-722_3" then
 					route = tostring(train.RouteNumberSys.CurrentRouteNumber)
 				elseif train:GetClass() == "gmod_subway_81-717_6" then
 					route = tostring(train.ASNP.RouteNumber)
