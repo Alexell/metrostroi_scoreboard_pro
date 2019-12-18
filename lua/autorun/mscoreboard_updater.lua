@@ -10,26 +10,15 @@ if SERVER then
 	util.AddNetworkString("MScoreBoard.ServerInfo")
 	util.AddNetworkString("MScoreBoard.ClientInfo")
 	
-	local TrainList = {
-		"gmod_subway_81-502",
-		"gmod_subway_81-540",
-		"gmod_subway_81-540_2",
-		"gmod_subway_81-702",
-		"gmod_subway_81-703",
-		"gmod_subway_ezh",
-		"gmod_subway_ezh3",
-		"gmod_subway_ezh3ru1",
-		"gmod_subway_81-717_1",
-		"gmod_subway_81-717_mvm",
-		"gmod_subway_81-717_lvz",
-		"gmod_subway_81-717_6",
-		"gmod_subway_81-718",
-		"gmod_subway_81-720",
-		"gmod_subway_81-722",
-		"gmod_subway_81-722_3",
-		"gmod_subway_81-760",
-		"gmod_subway_81-760a"
-	}
+	local TrainList = {}
+	
+	timer.Create("MScoreBoard.TrainClasses",1.5,1,function()
+		for _,class in pairs(Metrostroi.TrainClasses) do
+			local ENT = scripted_ents.Get(class)
+			if not ENT.Spawner or not ENT.SubwayTrain then continue end
+			table.insert(TrainList,class)
+		end
+	end)
 	
 	-- старый вариант получения местоположения by Agent Smith
 	local function GetTrainLoc(train,name_num)
