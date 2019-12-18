@@ -153,7 +153,7 @@ if SERVER then
 		local TrainCount = Metrostroi.TrainCount()
 		if TrainCount >= 0 then
 			net.Start("MScoreBoard.ServerInfo")
-				net.WriteInt(TrainCount,6)
+				net.WriteInt(TrainCount,32)
 			net.Broadcast()
 		end
 		for k, v in pairs(TrainList) do

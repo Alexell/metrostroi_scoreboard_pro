@@ -99,7 +99,7 @@ hook.Add("PopulateToolMenu", "MScoreBoardClientPanel", function()
 end)
 
 net.Receive("MScoreBoard.ServerInfo",function(ln,ply)
-	MScoreBoard.TrainCount = net.ReadInt(6)
+	MScoreBoard.TrainCount = net.ReadInt(32)
 end)
 
 -- поправки на разрешение экрана
