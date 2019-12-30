@@ -150,20 +150,7 @@ if SERVER then
 				local ply = train.Owner
 				if not IsValid(ply) then continue end
 				local route = "0"
-				if train:GetClass() == "gmod_subway_81-540_2" then
-					local rtype = train:GetNW2Int("Route",1)
-					if rtype == 1 then
-						route = string.sub(train.RouteNumbera.RouteNumbera,1,2)
-					end
-					if rtype == 2 then
-						route = train.RouteNumbera.RouteNumbera
-					end
-					if rtype == 3 then
-						if train.RouteNumberSys then
-							route = tostring(train.RouteNumberSys.RouteNumber)
-						end
-					end
-				elseif train:GetClass() == "gmod_subway_81-722" or train:GetClass() == "gmod_subway_81-722_3" then
+				if train:GetClass() == "gmod_subway_81-722" or train:GetClass() == "gmod_subway_81-722_3" or train:GetClass() == "gmod_subway_81-7175p" then
 					route = tostring(train.RouteNumberSys.CurrentRouteNumber)
 				elseif train:GetClass() == "gmod_subway_81-717_6" then
 					route = tostring(train.ASNP.RouteNumber)
