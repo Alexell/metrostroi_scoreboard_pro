@@ -2,7 +2,7 @@
 -- Автор: Alexell
 -- Лицензия: MIT
 -- Сайт: https://alexell.ru/
--- Steam: https://steamcommunity.com/id/alexell
+-- Steam: https://steamcommunity.com/id/alexellpro
 -- Repo: https://github.com/Alexell/metrostroi_scoreboard
 ----------------------------------------------------------
 include("player_row.lua")
