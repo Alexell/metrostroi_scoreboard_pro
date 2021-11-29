@@ -7,6 +7,9 @@ AuthorTextMScoreBoard = Archerity (STEAM_0:1:40909285)
 Entities.gmod_subway_81-540.Name = 81-540 (Nomernoi SPb)
 Entities.gmod_subway_81-717_6.Name = 81-717.6
 Entities.gmod_subway_ezh3ru1.Name = 81-710 (Ezh3 RU1)
+Entities.gmod_subway_81-540_2k.Name = 81-540.2К (Nomernoi SPb)
+Entities.gmod_subway_81-540_8.Name = 81-540.8 (Nomernoi SPb)
+Entities.gmod_subway_81-717_freight.Name = 81-717 (Freight SPb)
 
 #MScoreBoard
 MScoreBoard.CLTime = 현재 시간
