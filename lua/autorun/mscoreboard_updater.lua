@@ -150,7 +150,7 @@ if SERVER then
 				local ply = train.Owner
 				if not IsValid(ply) then continue end
 				local route = "0"
-				if train:GetClass() == "gmod_subway_81-722" or train:GetClass() == "gmod_subway_81-722_3" or train:GetClass() == "gmod_subway_81-7175p" then
+				if train:GetClass() == "gmod_subway_81-722" or train:GetClass() == "gmod_subway_81-722_3" or train:GetClass() == "gmod_subway_81-722_new" or train:GetClass() == "gmod_subway_81-7175p" then
 					route = tostring(train.RouteNumberSys.CurrentRouteNumber)
 				elseif train:GetClass() == "gmod_subway_81-717_6" then
 					route = tostring(train.ASNP.RouteNumber)
@@ -161,7 +161,9 @@ if SERVER then
 				end
 				ply:SetNW2String("MSRoute",route)
 				ply:SetNW2String("MSWagons",#train.WagonList)
-				ply:SetNW2String("MSTrainClass",train:GetClass())
+				-- ply:SetNW2String("MSTrainClass",train:GetClass())
+				-- костыль для грузового, т.к. у него сзади спавнится номерной мвм
+				if(ply:GetNW2String("MSTrainClass") ~= "gmod_subway_81-717_freight") then ply:SetNW2String("MSTrainClass",train:GetClass()) end
 				ply:SetNW2String("MSStation",BuildStationInfo(train,ply:GetNWString("MSLanguage")))
 			end
 		end
