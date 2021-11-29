@@ -1,10 +1,10 @@
------------------ Metrostroi Score Board -----------------
--- Автор: Alexell
--- Лицензия: MIT
--- Сайт: https://alexell.ru/
--- Steam: https://steamcommunity.com/id/alexellpro
--- Repo: https://github.com/Alexell/metrostroi_scoreboard
-----------------------------------------------------------
+-------------------- Metrostroi Score Board --------------------
+-- Developer: Alexell
+-- License: MIT
+-- Website: https://alexell.ru/
+-- Steam: https://steamcommunity.com/profiles/76561198210303223
+-- Source code: https://github.com/Alexell/metrostroi_scoreboard
+----------------------------------------------------------------
 
 local gradient = surface.GetTextureID("gui/center_gradient")
 local offset = 14 -- смещение от заголовка

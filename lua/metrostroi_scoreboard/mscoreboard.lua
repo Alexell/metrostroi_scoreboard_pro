@@ -1,10 +1,10 @@
------------------ Metrostroi Score Board -----------------
--- Автор: Alexell
--- Лицензия: MIT
--- Сайт: https://alexell.ru/
--- Steam: https://steamcommunity.com/id/alexellpro
--- Repo: https://github.com/Alexell/metrostroi_scoreboard
-----------------------------------------------------------
+-------------------- Metrostroi Score Board --------------------
+-- Developer: Alexell
+-- License: MIT
+-- Website: https://alexell.ru/
+-- Steam: https://steamcommunity.com/profiles/76561198210303223
+-- Source code: https://github.com/Alexell/metrostroi_scoreboard
+----------------------------------------------------------------
 include("player_row.lua")
 
 local function T(str,...)
