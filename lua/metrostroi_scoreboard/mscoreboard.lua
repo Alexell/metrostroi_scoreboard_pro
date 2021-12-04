@@ -132,6 +132,8 @@ function Board:Init()
 	end
 	
 	self.Pass = vgui.Create("DLabel",self)
+	self.MuteAll = false
+	self.MuteAllIcon = vgui.Create("DImageButton",self)
 	
 	self.PlayerRows = {}
 	self.Frame = vgui.Create("mplayersframe",self)
@@ -229,6 +231,8 @@ function Board:PerformLayout()
 	-- лейблы подвала
 	self.Pass:SizeToContents()
 	self.Pass:SetPos(20, self:GetTall()-27)
+	self.MuteAllIcon:SetSize(32,32)
+	self.MuteAllIcon:SetPos(self:GetWide()-self.MuteAllIcon:GetWide()-10, self:GetTall()-31)
 end
 
 function Board:ApplySchemeSettings()
@@ -269,6 +273,12 @@ function Board:GetPlayerRow(ply)
 	return self.PlayerRows[ply]
 end
 
+function Board:MuteAllPlayers(val)
+	for _,ply in pairs(player.GetAll()) do
+		ply:SetMuted(val)
+	end
+end
+
 function Board:Update()
 	if not self or not self:IsVisible() then return end
 	
@@ -281,10 +291,12 @@ function Board:Update()
 		end
 	end)
 	
+	local muted = 0
 	for _,ply in pairs(PlayerList) do
 		if not self:GetPlayerRow(ply) then
 			self:AddPlayerRow(ply)
 		end
+		if ply:IsMuted() then muted = muted + 1 end
 	end
 
 	local headtextcolor = Color(ms_head_fontcolor_r:GetInt(),ms_head_fontcolor_g:GetInt(),ms_head_fontcolor_b:GetInt(),255)
@@ -311,6 +323,14 @@ function Board:Update()
 
 	self.Info:SetText(T("MScoreBoard.Players")..": "..#PlayerList.." | "..T("MScoreBoard.Wagons")..": "..MScoreBoard.TrainCount)
 	self.Pass:SetText(T("MScoreBoard.TransPass",LocalPlayer():Frags()))
+	if (muted < #PlayerList) then
+		self.MuteAllIcon:SetImage("icon32/unmuted.png")
+		self.MuteAll = false
+	else
+		self.MuteAllIcon:SetImage("icon32/muted.png")
+		self.MuteAll = true
+	end
+	self.MuteAllIcon.DoClick = function() Board:MuteAllPlayers(not self.MuteAll) end
 	self:InvalidateLayout()
 end
 vgui.Register("MetrostroiScoreBoard",Board,"Panel")
