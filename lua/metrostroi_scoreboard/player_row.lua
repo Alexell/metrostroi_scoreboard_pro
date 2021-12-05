@@ -5,6 +5,7 @@
 -- Steam: https://steamcommunity.com/profiles/76561198210303223
 -- Source code: https://github.com/Alexell/metrostroi_scoreboard
 ----------------------------------------------------------------
+include("player_panel.lua")
 
 local gradient = surface.GetTextureID("gui/center_gradient")
 local offset = 14 -- смещение от заголовка
@@ -39,12 +40,18 @@ local function FixedRoute(class,route)
 end
 
 function PlayerRow:Init()
+	self.Height = 38
+	self.NeedHeight = 38
+	self.Extended = false
 	self.AvatarBTN = vgui.Create("DButton",self)
 	self.AvatarBTN.DoClick = function() self.Player:ShowProfile() end
 	self.AvatarIMG = vgui.Create("AvatarImage",self.AvatarBTN)
 	self.AvatarIMG:SetMouseInputEnabled(false)
 	
 	self.Nick = vgui.Create("DLabel",self)
+	self.Nick:SetCursor("hand")
+	self.Nick:SetMouseInputEnabled(true)
+	self.Nick.DoClick = function() self:OpenPanel(not self.Extended) end
 	self.Team = vgui.Create("DLabel",self)
 	self.Route = vgui.Create("DLabel",self)
 	self.Wags = vgui.Create("DLabel",self)
@@ -55,6 +62,7 @@ function PlayerRow:Init()
 		self.Ping = vgui.Create("DLabel",self)
 	end
 	self.MuteIcon = vgui.Create("DImageButton",self)
+	self.PlayerPanel = vgui.Create("mplayerpanel",self)
 end
 
 function PlayerRow:Paint(w,h)
@@ -68,6 +76,15 @@ function PlayerRow:Paint(w,h)
 		color = team.GetColor(self.Player:Team())
 	end
 	
+	if self.Extended or self.Height ~= self.NeedHeight then
+		draw.RoundedBox(4,2,16,self:GetWide()-4,self:GetTall()-16,color)
+		draw.RoundedBox(4,4,16,self:GetWide()-8,self:GetTall()-18,Color(225,225,225,150))
+
+		surface.SetTexture(gradient)
+		surface.SetDrawColor(255,255,255,100)
+		surface.DrawTexturedRect(20,16,self:GetWide()-40,self:GetTall()-18)
+	end
+	
 	draw.RoundedBox(4,0,0,self:GetWide(),38,color)
 	surface.SetTexture(gradient)
 	surface.SetDrawColor(255,255,255,150)
@@ -75,6 +92,7 @@ function PlayerRow:Paint(w,h)
 end
 
 function PlayerRow:PerformLayout()
+	self:SetSize(self:GetWide(),self.Height)
 	self.MuteIcon:SetSize(32,32)
 	self.MuteIcon:SetPos(self:GetWide()-self.MuteIcon:GetWide(),3)
 
@@ -118,6 +136,14 @@ function PlayerRow:PerformLayout()
 		self.Team:SetPos(self:GetWide()-offset-1150,11)
 		self.Team:SetWide(340)
 	end
+	
+	if self.Extended or self.Height ~= self.NeedHeight then
+		self.PlayerPanel:SetVisible(true)
+		self.PlayerPanel:SetPos(18,self.Nick:GetTall()+27)
+		self.PlayerPanel:SetSize(self:GetWide()-36, self:GetTall()-self.Nick:GetTall()+ 5)
+	else
+		self.PlayerPanel:SetVisible(false)
+	end
 end
 
 function PlayerRow:ApplySchemeSettings()
@@ -147,6 +173,15 @@ function PlayerRow:ApplySchemeSettings()
 		self.Hours:SetTextColor(Color(0,0,0,255))
 		self.Ping:SetTextColor(Color(0,0,0,255))
 	end
+end
+
+function PlayerRow:OpenPanel(val)
+	if val then
+		self.NeedHeight = 82
+	else
+		self.NeedHeight = 38
+	end
+	self.Extended = val
 end
 
 function PlayerRow:UpdatePlayerData()
@@ -189,9 +224,15 @@ function PlayerRow:SetPlayer(ply)
 	self.Player = ply
 	self:UpdatePlayerData()
 	self.AvatarIMG:SetPlayer(ply)
+	self.PlayerPanel:SetPlayer(ply)
 end
 
 function PlayerRow:Think()
+	if self.Height ~= self.NeedHeight then
+		self.Height = math.Approach(self.Height,self.NeedHeight,(math.abs(self.Height-self.NeedHeight)+1)*10*FrameTime())
+		self:PerformLayout()
+		MScoreBoard.Panel:InvalidateLayout()
+	end
 	if not self.PlayerUpdate or self.PlayerUpdate < CurTime() then
 		self.PlayerUpdate = CurTime() + 1
 		self:UpdatePlayerData()

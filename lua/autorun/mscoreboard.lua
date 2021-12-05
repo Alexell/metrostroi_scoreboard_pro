@@ -8,8 +8,10 @@
 
 MScoreBoard = MScoreBoard or {}
 if SERVER then
+	CreateConVar("mscoreboard_website", "https://metrostroi.net/profile/", {FCVAR_ARCHIVE})
 	AddCSLuaFile("metrostroi_scoreboard/mscoreboard.lua")
 	AddCSLuaFile("metrostroi_scoreboard/player_row.lua")
+	AddCSLuaFile("metrostroi_scoreboard/player_panel.lua")
 else
 	include("metrostroi_scoreboard/mscoreboard.lua")
 end

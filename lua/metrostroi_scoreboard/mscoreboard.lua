@@ -100,6 +100,7 @@ end)
 
 net.Receive("MScoreBoard.ServerInfo",function(ln,ply)
 	MScoreBoard.TrainCount = net.ReadInt(32)
+	MScoreBoard.Website = net.ReadString()
 end)
 
 -- поправки на разрешение экрана
@@ -265,7 +266,6 @@ function Board:AddPlayerRow(ply)
 	self.Frame.ScrollPanel:AddItem(row)
 	row:Dock(TOP)
 	row:DockMargin(3,3,3,0)
-	row:SetSize(self.Frame:GetWide(),38)
 	self.PlayerRows[ply] = row
 end
 

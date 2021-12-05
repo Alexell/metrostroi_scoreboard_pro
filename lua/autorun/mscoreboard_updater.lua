@@ -143,6 +143,7 @@ if SERVER then
 		if TrainCount >= 0 then
 			net.Start("MScoreBoard.ServerInfo")
 				net.WriteInt(TrainCount,32)
+				net.WriteString(GetConVar("mscoreboard_website"):GetString())
 			net.Broadcast()
 		end
 		for k, v in pairs(TrainList) do
@@ -197,7 +198,7 @@ else
 		if not IsValid(LocalPlayer()) then return end
 		if LocalPlayer():GetNW2String("MSLanguage") == "" then
 			net.Start("MScoreBoard.ClientInfo")
-				net.WriteString(GetConVarString("metrostroi_language"))
+				net.WriteString(GetConVar("metrostroi_language"):GetString())
 			net.SendToServer()
 		end
 	end)
