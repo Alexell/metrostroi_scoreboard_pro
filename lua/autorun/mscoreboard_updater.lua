@@ -12,7 +12,7 @@ if SERVER then
 	
 	local TrainList = {}
 	
-	timer.Create("MScoreBoard.TrainClasses",1.5,1,function()
+	timer.Simple(1.5,function()
 		for _,class in pairs(Metrostroi.TrainClasses) do
 			local ENT = scripted_ents.Get(class)
 			if not ENT.Spawner or not ENT.SubwayTrain then continue end

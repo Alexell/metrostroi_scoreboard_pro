@@ -32,8 +32,10 @@ vgui.Register("msadminbtn",AdminBtn,"Button")
 
 local PlayerPanel = {}
 function PlayerPanel:Init()
-	self.BtnWeb = vgui.Create("DImageButton",self)
-	self.BtnWeb.DoClick = function() gui.OpenURL(MScoreBoard.Website..self.Player:SteamID()) end
+	if (MScoreBoard.Website ~= "0") then
+		self.BtnWeb = vgui.Create("DImageButton",self)
+		self.BtnWeb.DoClick = function() gui.OpenURL(MScoreBoard.Website..self.Player:SteamID()) end
+	end
 	if (PlayerPermission(LocalPlayer(),"ulx prid")) then
 		self.BtnPR = vgui.Create("DImageButton",self)
 		self.BtnPR.DoClick = function() RunConsoleCommand("ulx","prid",self.Player:SteamID()) end
@@ -47,7 +49,7 @@ function PlayerPanel:Init()
 		self.BtnTrainTP.DoClick = function() RunConsoleCommand("ulx","traintp",self.Player:Nick()) end
 	end
 
-	if (PlayerPermission(LocalPlayer(),"ulx banid")) then
+	if (PlayerPermission(LocalPlayer(),"ulx ban")) then
 		self.BtnBan = vgui.Create("msadminbtn",self)
 		self.BtnBan.Text = T("MScoreBoard.Ban")
 		self.BtnBan.DoClick = function() xgui.ShowBanWindow(self.Player,self.Player:SteamID(),false) end
@@ -66,10 +68,12 @@ end
 function PlayerPanel:PerformLayout()
 	-- левая сторона
 	local offsetL = 0
+	if (self.BtnWeb) then
 	self.BtnWeb:SetSize(32,32)
 	self.BtnWeb:SetPos(0,0)
 	self.BtnWeb:SetImage("mscoreboard/ms_profile_web.png")
 	offsetL = offsetL + self.BtnWeb:GetWide() + 5
+	end
 	if (self.BtnPR) then
 		self.BtnPR:SetSize(32,32)
 		self.BtnPR:SetPos(offsetL,0)
