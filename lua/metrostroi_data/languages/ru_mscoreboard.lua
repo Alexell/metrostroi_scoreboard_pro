@@ -28,6 +28,7 @@ MScoreBoard.TransPass = Вы перевезли: %s пассажиров
 MScoreBoard.Kick = Кик
 MScoreBoard.Kicked = Кикнут администратором сервера
 MScoreBoard.Ban = Бан
+MScoreBoard.PlayerVol = Громкость игрока
 
 #ClientPanel
 MSCP.Colors = Цвета

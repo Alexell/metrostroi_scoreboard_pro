@@ -232,7 +232,7 @@ function PlayerRow:SetPlayer(ply)
 	self.PlayerPanel:SetPlayer(ply)
 end
 
--- This function created by ZionDevelopers (port of the vanilla gmod volume slider)
+-- This function created by ZionDevelopers (port of the vanilla gmod volume slider) + my fixes
 function PlayerRow:ShowMicVolumeSlider()
 	local width = 300
 	local height = 50
@@ -248,31 +248,29 @@ function PlayerRow:ShowMicVolumeSlider()
 	currentPlayerVolume = currentPlayerVolume ~= nil and currentPlayerVolume or 1
 
 	-- Frame for the slider
-	local frame = vgui.Create("DFrame")
-	frame:SetPos(x, y)
-	frame:SetSize(width, height)
-	frame:MakePopup()
-	frame:SetTitle("")
-	frame:ShowCloseButton(false)
-	frame:SetDraggable(false)
-	frame:SetSizable(false)
-	frame.Paint = function(self, w, h)
-	draw.RoundedBox(5, 0, 0, w, h, Color(30, 30, 30, 205))
+	if self.VolumeFrame then self.VolumeFrame:Remove() end
+	self.VolumeFrame = vgui.Create("DFrame")
+	self.VolumeFrame:SetPos(x, y)
+	self.VolumeFrame:SetSize(width, height)
+	self.VolumeFrame:MakePopup()
+	self.VolumeFrame:SetTitle("")
+	self.VolumeFrame:ShowCloseButton(false)
+	self.VolumeFrame:SetDraggable(false)
+	self.VolumeFrame:SetSizable(false)
+	self.VolumeFrame.Paint = function(self, w, h)
+		draw.RoundedBox(5, 0, 0, w, h, Color(0, 0, 0, 180))
 	end
 
-	-- Automatically close after 10 seconds (something may have gone wrong)
-	timer.Simple(10, function() if IsValid(frame) then frame:Close() end end)
-
 	-- "Player volume"
-	local label = vgui.Create("DLabel", frame)
-	label:SetPos(padding, padding)
-	label:SetFont("DermaDefaultBold")
+	local label = vgui.Create("DLabel", self.VolumeFrame)
+	label:SetPos(padding+5, padding-5)
+	label:SetFont("mscoreboardmain")
 	label:SetSize(width - padding * 2, 20)
 	label:SetColor(Color(255, 255, 255, 255))
-	label:SetText("Player Volume:")
+	label:SetText(T("MScoreBoard.PlayerVol")..":")
 
 	-- Slider
-	local slider = vgui.Create("DSlider", frame)
+	local slider = vgui.Create("DSlider", self.VolumeFrame)
 	slider:SetHeight(sliderHeight)
 	slider:Dock(TOP)
 	slider:DockMargin(padding, 0, padding, 0)
@@ -284,8 +282,8 @@ function PlayerRow:ShowMicVolumeSlider()
 	end
 
 	-- Close the slider panel once the player has selected a volume
-	slider.OnMouseReleased = function(panel, mcode) frame:Close() end
-	slider.Knob.OnMouseReleased = function(panel, mcode) frame:Close() end
+	slider.OnMouseReleased = function(panel, mcode) self.VolumeFrame:Close() end
+	slider.Knob.OnMouseReleased = function(panel, mcode) self.VolumeFrame:Close() end
 
 	-- Slider rendering
 	-- Render slider bar
@@ -296,7 +294,7 @@ function PlayerRow:ShowMicVolumeSlider()
 		draw.RoundedBox(5, 0, sliderDisplayHeight / 2, w * volumePercent, sliderDisplayHeight, Color(208, 208, 208, 255))
 
 		-- Grey box
-		draw.RoundedBox(5, w * volumePercent, sliderDisplayHeight / 2, w * (1 - volumePercent), sliderDisplayHeight, Color(84, 84, 84, 255))
+		draw.RoundedBox(5, w * volumePercent, sliderDisplayHeight / 2, w * (1 - volumePercent), sliderDisplayHeight, Color(104, 104, 104, 255))
 	end
 
 	-- Render slider "knob" & text
@@ -307,14 +305,14 @@ function PlayerRow:ShowMicVolumeSlider()
 
 			-- The position of the text and size of rounded box are not relative to the text size. May cause problems if font size changes
 			draw.RoundedBox(
-			5, -- Radius
-			-sliderHeight * 0.5 - textPadding, -- X
-			-25, -- Y
-			sliderHeight * 2 + textPadding * 2, -- Width
-			sliderHeight + textPadding * 2, -- Height
-			Color(55, 55, 55, 208)
+				5, -- Radius
+				-sliderHeight * 0.5 - textPadding, -- X
+				-25, -- Y
+				sliderHeight * 2 + textPadding * 2, -- Width
+				sliderHeight + textPadding * 2, -- Height
+				Color(55, 55, 55, 208)
 			)
-			draw.DrawText(textValue, "DermaDefaultBold", sliderHeight / 2, -20, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+			draw.DrawText(textValue, "mscoreboardmain", sliderHeight / 2, -20, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 		end
 
 		draw.RoundedBox(100, 0, 0, sliderHeight, sliderHeight, Color(255, 255, 255, 255))

@@ -379,6 +379,9 @@ function MScoreBoard:Show()
 	if ms_head_backcolor_r:GetInt() == 256 then MScoreBoard.ResetColors() end
 
 	function MScoreBoard:Hide()
+		for _,v in pairs(MScoreBoard.Panel.PlayerRows) do	-- принудительно удаляем VolumeFrame
+			if v.VolumeFrame then v.VolumeFrame:Remove() end
+		end
 		MScoreBoard.Panel:Remove()
 		MScoreBoard.Panel = nil
 		gui.EnableScreenClicker(false)

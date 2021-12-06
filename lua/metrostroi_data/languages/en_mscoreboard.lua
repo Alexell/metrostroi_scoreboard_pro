@@ -28,6 +28,7 @@ MScoreBoard.TransPass = You have transported: %s passengers
 MScoreBoard.Kick = Kick
 MScoreBoard.Kicked = Kicked by server admin
 MScoreBoard.Ban = Ban
+MScoreBoard.PlayerVol = Player Volume
 
 #ClientPanel
 MSCP.Colors = Colors
