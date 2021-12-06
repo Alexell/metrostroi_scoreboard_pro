@@ -25,6 +25,9 @@ MScoreBoard.Hours = 시간
 MScoreBoard.Ping = 핑
 MScoreBoard.Players = 플레이어
 MScoreBoard.TransPass = %s명의 승객을 수송하였습니다.
+MScoreBoard.Kick = Kick
+MScoreBoard.Kicked = Kicked by server admin
+MScoreBoard.Ban = Ban
 
 #ClientPanel
 MSCP.Colors = 색상

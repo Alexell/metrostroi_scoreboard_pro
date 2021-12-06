@@ -25,6 +25,9 @@ MScoreBoard.Hours = Hours
 MScoreBoard.Ping = Ping
 MScoreBoard.Players = Players
 MScoreBoard.TransPass = You have transported: %s passengers
+MScoreBoard.Kick = Kick
+MScoreBoard.Kicked = Kicked by server admin
+MScoreBoard.Ban = Ban
 
 #ClientPanel
 MSCP.Colors = Colors

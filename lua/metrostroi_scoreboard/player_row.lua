@@ -1,10 +1,10 @@
--------------------- Metrostroi Score Board --------------------
+---------------------- Metrostroi Score Board ----------------------
 -- Developer: Alexell
 -- License: MIT
 -- Website: https://alexell.ru/
 -- Steam: https://steamcommunity.com/profiles/76561198210303223
--- Source code: https://github.com/Alexell/metrostroi_scoreboard
-----------------------------------------------------------------
+-- Source code: https://github.com/Alexell/metrostroi_scoreboard_pro
+--------------------------------------------------------------------
 include("player_panel.lua")
 
 local gradient = surface.GetTextureID("gui/center_gradient")
@@ -186,7 +186,7 @@ end
 
 function PlayerRow:UpdatePlayerData()
 	local ply = self.Player
-	if not IsValid(ply) then return end
+	if not IsValid(ply) then MScoreBoard.Panel:InvalidateLayout() return end
 	self.Nick:SetText(ply:Nick())
 	self.Team:SetText(team.GetName(ply:Team()))
 	self.Route:SetText(FixedRoute(ply:GetNW2String("MSTrainClass","-"),ply:GetNW2String("MSRoute","-")))

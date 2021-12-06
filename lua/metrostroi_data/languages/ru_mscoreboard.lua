@@ -25,6 +25,9 @@ MScoreBoard.Hours = Часы
 MScoreBoard.Ping = Пинг
 MScoreBoard.Players = Игроки
 MScoreBoard.TransPass = Вы перевезли: %s пассажиров
+MScoreBoard.Kick = Кик
+MScoreBoard.Kicked = Кикнут администратором сервера
+MScoreBoard.Ban = Бан
 
 #ClientPanel
 MSCP.Colors = Цвета
