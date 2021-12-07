@@ -258,7 +258,7 @@ function PlayerRow:ShowMicVolumeSlider()
 	self.VolumeFrame:SetDraggable(false)
 	self.VolumeFrame:SetSizable(false)
 	self.VolumeFrame.Paint = function(self, w, h)
-		draw.RoundedBox(5, 0, 0, w, h, Color(0, 0, 0, 180))
+		draw.RoundedBox(5, 0, 0, w, h, Color(0, 0, 0, 210))
 	end
 
 	-- "Player volume"
@@ -267,7 +267,7 @@ function PlayerRow:ShowMicVolumeSlider()
 	label:SetFont("mscoreboardmain")
 	label:SetSize(width - padding * 2, 20)
 	label:SetColor(Color(255, 255, 255, 255))
-	label:SetText(T("MScoreBoard.PlayerVol")..":")
+	label:SetText(T("MScoreBoard.PlayerVol")..": "..math.Round((self.Player:GetVoiceVolumeScale()*100)).."%")
 
 	-- Slider
 	local slider = vgui.Create("DSlider", self.VolumeFrame)
@@ -300,21 +300,8 @@ function PlayerRow:ShowMicVolumeSlider()
 	-- Render slider "knob" & text
 	slider.Knob.Paint = function(self, w, h)
 		if slider:IsEditing() then
-			local textValue = math.Round(slider:GetSlideX() * 100) .. "%"
-			local textPadding = 5
-
-			-- The position of the text and size of rounded box are not relative to the text size. May cause problems if font size changes
-			draw.RoundedBox(
-				5, -- Radius
-				-sliderHeight * 0.5 - textPadding, -- X
-				-25, -- Y
-				sliderHeight * 2 + textPadding * 2, -- Width
-				sliderHeight + textPadding * 2, -- Height
-				Color(55, 55, 55, 208)
-			)
-			draw.DrawText(textValue, "mscoreboardmain", sliderHeight / 2, -20, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+			label:SetText(T("MScoreBoard.PlayerVol")..": "..math.Round(slider:GetSlideX()*100).."%")
 		end
-
 		draw.RoundedBox(100, 0, 0, sliderHeight, sliderHeight, Color(255, 255, 255, 255))
 	end
 end
