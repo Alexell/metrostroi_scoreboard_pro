@@ -25,7 +25,7 @@ end
 function AdminBtn:Paint(w,h)
 	local color = Color(127,127,127,70) -- должен быть одинаковый c фоном иконок
 	draw.RoundedBox(4,0,0,self:GetWide(),self:GetTall(),color)	
-	draw.SimpleText(self.Text,"mscoreboardmain",self:GetWide()/2,self:GetTall()/2, Color(255,255,255,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+	draw.SimpleText(self.Text,"mscoreboardmain",self:GetWide()/2,self:GetTall()/2, Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 	return true
 end
 vgui.Register("msadminbtn",AdminBtn,"Button")
