@@ -6,16 +6,16 @@ local gpanel
 
 --Now convars!
 local utime_enable = CreateClientConVar( "utime_enable", "1.0", true, false )
-local utime_outsidecolor_r = CreateClientConVar( "utime_outsidecolor_r", "256", true, false )
-local utime_outsidecolor_g = CreateClientConVar( "utime_outsidecolor_g", "256", true, false )
-local utime_outsidecolor_b = CreateClientConVar( "utime_outsidecolor_b", "256", true, false )
+local utime_outsidecolor_r = CreateClientConVar( "utime_outsidecolor_r", "255", true, false )
+local utime_outsidecolor_g = CreateClientConVar( "utime_outsidecolor_g", "255", true, false )
+local utime_outsidecolor_b = CreateClientConVar( "utime_outsidecolor_b", "255", true, false )
 local utime_outsidetext_r = CreateClientConVar( "utime_outsidetext_r", "0.0", true, false )
 local utime_outsidetext_g = CreateClientConVar( "utime_outsidetext_g", "0.0", true, false )
 local utime_outsidetext_b = CreateClientConVar( "utime_outsidetext_b", "0.0", true, false )
 
-local utime_insidecolor_r = CreateClientConVar( "utime_insidecolor_r", "256.0", true, false )
-local utime_insidecolor_g = CreateClientConVar( "utime_insidecolor_g", "256.0", true, false )
-local utime_insidecolor_b = CreateClientConVar( "utime_insidecolor_b", "256.0", true, false )
+local utime_insidecolor_r = CreateClientConVar( "utime_insidecolor_r", "255.0", true, false )
+local utime_insidecolor_g = CreateClientConVar( "utime_insidecolor_g", "255.0", true, false )
+local utime_insidecolor_b = CreateClientConVar( "utime_insidecolor_b", "255.0", true, false )
 local utime_insidetext_r = CreateClientConVar( "utime_insidetext_r", "0", true, false )
 local utime_insidetext_g = CreateClientConVar( "utime_insidetext_g", "0", true, false )
 local utime_insidetext_b = CreateClientConVar( "utime_insidetext_b", "0", true, false )
