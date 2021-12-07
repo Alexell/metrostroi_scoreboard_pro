@@ -232,7 +232,7 @@ function PlayerRow:SetPlayer(ply)
 	self.PlayerPanel:SetPlayer(ply)
 end
 
--- This function created by ZionDevelopers (port of the vanilla gmod volume slider) + my fixes
+-- This function created by ZionDevelopers (port of the vanilla gmod volume slider) + my changes
 function PlayerRow:ShowMicVolumeSlider()
 	local width = 300
 	local height = 50
