@@ -20,7 +20,6 @@ surface.CreateFont("mscoreboardmain",{
 	size = 16,
 	weight = 100
 })
-MScoreBoard.TrainCount = 0
 local gradient = surface.GetTextureID("gui/center_gradient")
 
 -- Цветовая схема
@@ -82,25 +81,73 @@ end
 concommand.Add("mscoreboard_reset",MScoreBoard.ResetColors)
 
 local function MSPanel(panel)
-	panel:ClearControls()
-	panel:Help("Metrostroi Scoreboard Pro (by Alexell)")
-	panel:AddControl("Color",{Label=T("MSCP.Header1"),Red="ms_head_backcolor_r",Green="ms_head_backcolor_g",Blue="ms_head_backcolor_b",Alpha="ms_head_backcolor_a",ShowAlpha="1",Multiplier="255"})
-	panel:AddControl("Color",{Label=T("MSCP.Header2"),Red="ms_head_fontcolor_r",Green="ms_head_fontcolor_g",Blue="ms_head_fontcolor_b",ShowAlpha="0",Multiplier="255"})
-	panel:AddControl("Color",{Label=T("MSCP.Frame1"),Red="ms_center_backcolor_r",Green="ms_center_backcolor_g",Blue="ms_center_backcolor_b",Alpha="ms_center_backcolor_a",ShowAlpha="1",Multiplier="255"})
-	panel:AddControl("Color",{Label=T("MSCP.Frame2"),Red="ms_center_fontcolor_r",Green="ms_center_fontcolor_g",Blue="ms_center_fontcolor_b",ShowAlpha="0",Multiplier="255"})
-	panel:AddControl("Color",{Label=T("MSCP.Frame3"),Red="ms_center_framecolor_r",Green="ms_center_framecolor_g",Blue="ms_center_framecolor_b",Alpha="ms_center_framecolor_a",ShowAlpha="1",Multiplier="255"})
-	panel:AddControl("Color",{Label=T("MSCP.Footer1"),Red="ms_foot_backcolor_r",Green="ms_foot_backcolor_g",Blue="ms_foot_backcolor_b",Alpha="ms_foot_backcolor_a",ShowAlpha="1",Multiplier="255"})
-	panel:AddControl("Color",{Label=T("MSCP.Footer2"),Red="ms_foot_fontcolor_r",Green="ms_foot_fontcolor_g",Blue="ms_foot_fontcolor_b",ShowAlpha="0",Multiplier="255"})
-	panel:AddControl("Button",{Text="Reset",Label=T("MSCP.Reset"),Command="mscoreboard_reset"})
+    panel:ClearControls()
+    panel:SetPadding(0)
+    panel:SetSpacing(0)
+    panel:Dock(FILL)
+	panel:ControlHelp("Metrostroi Scoreboard Pro (by Alexell)")
+	
+	panel:Help(T("MSCP.Header1"))
+	local Header1 = vgui.Create("DColorMixer")
+	Header1:SetConVarR("ms_head_backcolor_r")
+	Header1:SetConVarG("ms_head_backcolor_g")
+	Header1:SetConVarB("ms_head_backcolor_b")
+	Header1:SetConVarA("ms_head_backcolor_a")
+	panel:AddItem(Header1)
+	
+	panel:Help(T("MSCP.Header2"))
+	local Header2 = vgui.Create("DColorMixer")
+	Header2:SetConVarR("ms_head_fontcolor_r")
+	Header2:SetConVarG("ms_head_fontcolor_g")
+	Header2:SetConVarB("ms_head_fontcolor_b")
+	Header2:SetAlphaBar(false)
+	panel:AddItem(Header2)
+	
+	panel:Help(T("MSCP.Frame1"))
+	local Frame1 = vgui.Create("DColorMixer")
+	Frame1:SetConVarR("ms_center_backcolor_r")
+	Frame1:SetConVarG("ms_center_backcolor_g")
+	Frame1:SetConVarB("ms_center_backcolor_b")
+	Frame1:SetConVarA("ms_center_backcolor_a")
+	panel:AddItem(Frame1)
+	
+	panel:Help(T("MSCP.Frame2"))
+	local Frame2 = vgui.Create("DColorMixer")
+	Frame2:SetConVarR("ms_center_fontcolor_r")
+	Frame2:SetConVarG("ms_center_fontcolor_g")
+	Frame2:SetConVarB("ms_center_fontcolor_b")
+	Frame2:SetAlphaBar(false)
+	panel:AddItem(Frame2)
+
+	panel:Help(T("MSCP.Frame3"))
+	local Frame3 = vgui.Create("DColorMixer")
+	Frame3:SetConVarR("ms_center_framecolor_r")
+	Frame3:SetConVarG("ms_center_framecolor_g")
+	Frame3:SetConVarB("ms_center_framecolor_b")
+	Frame3:SetConVarA("ms_center_framecolor_a")
+	panel:AddItem(Frame3)
+
+	panel:Help(T("MSCP.Footer1"))
+	local Footer1 = vgui.Create("DColorMixer")
+	Footer1:SetConVarR("ms_foot_backcolor_r")
+	Footer1:SetConVarG("ms_foot_backcolor_g")
+	Footer1:SetConVarB("ms_foot_backcolor_b")
+	Footer1:SetConVarA("ms_foot_backcolor_a")
+	panel:AddItem(Footer1)
+	
+	panel:Help(T("MSCP.Footer2"))
+	local Footer2 = vgui.Create("DColorMixer")
+	Footer2:SetConVarR("ms_foot_fontcolor_r")
+	Footer2:SetConVarG("ms_foot_fontcolor_g")
+	Footer2:SetConVarB("ms_foot_fontcolor_b")
+	Footer2:SetAlphaBar(false)
+	panel:AddItem(Footer2)
+	
+	panel:Button(T("MSCP.Reset"),"mscoreboard_reset",true)
 end
 
 hook.Add("PopulateToolMenu", "MScoreBoardClientPanel", function()
     spawnmenu.AddToolMenuOption("Utilities","MScoreboard Pro","MSClientPanel",T("MSCP.Colors"),"","",MSPanel)
-end)
-
-net.Receive("MScoreBoard.ServerInfo",function(ln,ply)
-	MScoreBoard.TrainCount = net.ReadInt(32)
-	MScoreBoard.Website = net.ReadString()
 end)
 
 -- поправки на разрешение экрана
@@ -321,7 +368,7 @@ function Board:Update()
 		self.Ping:SetTextColor(centertextcolor)
 	end
 
-	self.Info:SetText(T("MScoreBoard.Players")..": "..#PlayerList.." | "..T("MScoreBoard.Wagons")..": "..MScoreBoard.TrainCount)
+	self.Info:SetText(T("MScoreBoard.Players")..": "..#PlayerList.." | "..T("MScoreBoard.Wagons")..": "..GetGlobalInt("metrostroi_train_count",0))
 	self.Pass:SetText(T("MScoreBoard.TransPass",LocalPlayer():Frags()))
 	if (muted < #PlayerList) then
 		self.MuteAllIcon:SetImage("icon32/unmuted.png")

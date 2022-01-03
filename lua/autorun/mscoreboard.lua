@@ -7,8 +7,8 @@
 --------------------------------------------------------------------
 
 MScoreBoard = MScoreBoard or {}
+CreateConVar("mscoreboard_website", "https://metrostroi.net/profile/", FCVAR_REPLICATED)
 if SERVER then
-	CreateConVar("mscoreboard_website", "https://metrostroi.net/profile/", {FCVAR_ARCHIVE})
 	AddCSLuaFile("metrostroi_scoreboard/mscoreboard.lua")
 	AddCSLuaFile("metrostroi_scoreboard/player_row.lua")
 	AddCSLuaFile("metrostroi_scoreboard/player_panel.lua")

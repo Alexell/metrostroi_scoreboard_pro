@@ -20,11 +20,7 @@ local function GetTrainName(class)
 	if class ~= "-" then
 		local train_name = T("Entities."..class..".Name")
 		local s1,s2 = string.find(train_name," головной") or string.find(train_name," head")
-		if s1 then
-			result = string.sub(train_name,1,s1-1)..")"
-		else
-			result = train_name
-		end
+		result = s1 and string.sub(train_name,1,s1-1)..")" or train_name
 	end
 	return result
 end

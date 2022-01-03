@@ -32,9 +32,9 @@ vgui.Register("msadminbtn",AdminBtn,"Button")
 
 local PlayerPanel = {}
 function PlayerPanel:Init()
-	if (MScoreBoard.Website ~= "0") then
+	if (GetConVar("mscoreboard_website"):GetString() ~= "0") then
 		self.BtnWeb = vgui.Create("DImageButton",self)
-		self.BtnWeb.DoClick = function() gui.OpenURL(MScoreBoard.Website..self.Player:SteamID()) end
+		self.BtnWeb.DoClick = function() gui.OpenURL(GetConVar("mscoreboard_website"):GetString()..self.Player:SteamID()) end
 	end
 	if (PlayerPermission(LocalPlayer(),"ulx prid")) then
 		self.BtnPR = vgui.Create("DImageButton",self)

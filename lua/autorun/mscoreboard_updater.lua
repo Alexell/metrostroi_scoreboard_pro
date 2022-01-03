@@ -7,11 +7,9 @@
 --------------------------------------------------------------------
 
 if SERVER then
-	util.AddNetworkString("MScoreBoard.ServerInfo")
 	util.AddNetworkString("MScoreBoard.ClientInfo")
 	
 	local TrainList = {}
-	
 	timer.Simple(1.5,function()
 		for _,class in pairs(Metrostroi.TrainClasses) do
 			local ENT = scripted_ents.Get(class)
@@ -20,10 +18,9 @@ if SERVER then
 		end
 	end)
 	
-	-- старый вариант получения местоположения by Agent Smith
+	-- Получение местоположения by Agent Smith
 	local function GetTrainLoc(train,name_num)
 		local train_station = ""
-		local map_pos
 		local station_pos
 		local station_posx
 		local station_posy
@@ -52,9 +49,8 @@ if SERVER then
 		train_posz = tonumber(train_posz)	
 
 		for k, v in pairs(Metrostroi.StationConfigurations) do
-			map_pos = v.positions and v.positions[1]
-			if map_pos and map_pos[1] then
-				station_pos = tostring(map_pos[1])
+			if v.positions and v.positions[1] then
+				station_pos = tostring(v.positions[1])
 				get_pos1 = string.find(station_pos, " ")
 				station_posx = string.sub(station_pos,1,get_pos1)
 				station_posx = tonumber(station_posx)
@@ -139,34 +135,29 @@ if SERVER then
 	end
 	
 	timer.Create("MScoreBoard.ServerUpdate",3,0,function()
-		local TrainCount = Metrostroi.TrainCount()
-		if TrainCount >= 0 then
-			net.Start("MScoreBoard.ServerInfo")
-				net.WriteInt(TrainCount,32)
-				net.WriteString(GetConVar("mscoreboard_website"):GetString())
-			net.Broadcast()
-		end
-		for k, v in pairs(TrainList) do
-			for _,train in pairs(ents.FindByClass(v)) do
-				local ply = train.Owner
-				if not IsValid(ply) then continue end
-				local route = "0"
-				if train:GetClass() == "gmod_subway_81-722" or train:GetClass() == "gmod_subway_81-722_3" or train:GetClass() == "gmod_subway_81-722_new" or train:GetClass() == "gmod_subway_81-7175p" then
-					route = tostring(train.RouteNumberSys.CurrentRouteNumber)
-				elseif train:GetClass() == "gmod_subway_81-717_6" then
-					route = tostring(train.ASNP.RouteNumber)
-				else
-					if train.RouteNumber then
-						route = train.RouteNumber.RouteNumber
-					end
+		local route
+		local ply
+		for train in pairs(Metrostroi.SpawnedTrains) do
+			if not IsValid(train) then continue end
+			if not table.HasValue(TrainList,train:GetClass()) then continue end
+			ply = train.Owner
+			if not IsValid(ply) then continue end
+			route = 0
+			if train:GetClass() == "gmod_subway_81-722" or train:GetClass() == "gmod_subway_81-722_3" or train:GetClass() == "gmod_subway_81-722_new" or train:GetClass() == "gmod_subway_81-7175p" then
+				route = train.RouteNumberSys.CurrentRouteNumber
+			elseif train:GetClass() == "gmod_subway_81-717_6" then
+				route = train.ASNP.RouteNumber
+			else
+				if train.RouteNumber then
+					route = train.RouteNumber.RouteNumber
 				end
-				ply:SetNW2String("MSRoute",route)
-				ply:SetNW2String("MSWagons",#train.WagonList)
-				-- ply:SetNW2String("MSTrainClass",train:GetClass())
-				-- костыль для грузового, т.к. у него сзади спавнится номерной мвм
-				if(ply:GetNW2String("MSTrainClass") ~= "gmod_subway_81-717_freight") then ply:SetNW2String("MSTrainClass",train:GetClass()) end
-				ply:SetNW2String("MSStation",BuildStationInfo(train,ply:GetNWString("MSLanguage")))
 			end
+			ply:SetNW2String("MSRoute",tostring(route))
+			ply:SetNW2String("MSWagons",#train.WagonList)
+			-- ply:SetNW2String("MSTrainClass",train:GetClass())
+			-- костыль для грузового, т.к. у него сзади спавнится номерной мвм
+			if(ply:GetNW2String("MSTrainClass") ~= "gmod_subway_81-717_freight") then ply:SetNW2String("MSTrainClass",train:GetClass()) end
+			ply:SetNW2String("MSStation",BuildStationInfo(train,ply:GetNWString("MSLanguage")))
 		end
 		for k, v in pairs(player.GetAll()) do
 			local train = v:GetTrain()
@@ -178,7 +169,7 @@ if SERVER then
 		end
 	end)
 
-	hook.Add("EntityRemoved","MScoreBoard.DeleteInfo",function (ent)
+	hook.Add("EntityRemoved","MScoreBoard.DeleteInfo",function(ent)
 		local ply = ent.Owner
 		if not IsValid(ply) then return end
 		if ent:GetClass() == ply:GetNW2String("MSTrainClass") then
