@@ -21,6 +21,7 @@ if SERVER then
 	-- Получение местоположения by Agent Smith
 	local function GetTrainLoc(train,name_num)
 		local train_station = ""
+		local map_pos
 		local station_pos
 		local station_posx
 		local station_posy
@@ -49,8 +50,9 @@ if SERVER then
 		train_posz = tonumber(train_posz)	
 
 		for k, v in pairs(Metrostroi.StationConfigurations) do
-			if v.positions and v.positions[1] then
-				station_pos = tostring(v.positions[1])
+			map_pos = v.positions and v.positions[1]
+			if map_pos and map_pos[1] then
+				station_pos = tostring(map_pos[1])
 				get_pos1 = string.find(station_pos, " ")
 				station_posx = string.sub(station_pos,1,get_pos1)
 				station_posx = tonumber(station_posx)
