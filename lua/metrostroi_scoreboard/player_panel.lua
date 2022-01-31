@@ -47,6 +47,9 @@ function PlayerPanel:Init()
 	if (MetrostroiAdvanced and PlayerPermission(LocalPlayer(),"ulx traintp")) then
 		self.BtnTrainTP = vgui.Create("DImageButton",self)
 		self.BtnTrainTP.DoClick = function() RunConsoleCommand("ulx","traintp",self.Player:Nick()) end
+	elseif (Metrostroi.Version > 1537278077 and PlayerPermission(LocalPlayer(),"ulx traingoto")) then
+		self.BtnTrainTP = vgui.Create("DImageButton",self)
+		self.BtnTrainTP.DoClick = function() RunConsoleCommand("ulx","traingoto") end
 	end
 
 	if (PlayerPermission(LocalPlayer(),"ulx ban")) then
@@ -91,13 +94,22 @@ function PlayerPanel:PerformLayout()
 		end
 	end
 	if (self.BtnTrainTP) then
-		if (self.Player:GetNW2String("MSTrainClass","-") ~= "-") then
-			self.BtnTrainTP:SetSize(32,32)
-			self.BtnTrainTP:SetPos(offsetL,0)
-			self.BtnTrainTP:SetImage("mscoreboard/ms_traintp.png")
-			offsetL = offsetL + self.BtnTrainTP:GetWide() + 5
-		else
-			self.BtnTrainTP:SetVisible(false)
+		if MetrostroiAdvanced then
+			if (self.Player:GetNW2String("MSTrainClass","-") ~= "-") then
+				self.BtnTrainTP:SetSize(32,32)
+				self.BtnTrainTP:SetPos(offsetL,0)
+				self.BtnTrainTP:SetImage("mscoreboard/ms_traintp.png")
+			else
+				self.BtnTrainTP:SetVisible(false)
+			end
+		elseif Metrostroi.Version > 1537278077 then
+			if (self.Player == LocalPlayer() and self.Player:GetNW2String("MSTrainClass","-") ~= "-") then
+				self.BtnTrainTP:SetSize(32,32)
+				self.BtnTrainTP:SetPos(offsetL,0)
+				self.BtnTrainTP:SetImage("mscoreboard/ms_traintp.png")
+			else
+				self.BtnTrainTP:SetVisible(false)
+			end
 		end
 	end
 	
