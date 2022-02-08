@@ -12,6 +12,7 @@ if SERVER then
 	AddCSLuaFile("metrostroi_scoreboard/mscoreboard.lua")
 	AddCSLuaFile("metrostroi_scoreboard/player_row.lua")
 	AddCSLuaFile("metrostroi_scoreboard/player_panel.lua")
+	resource.AddWorkshop("1910844812")
 else
 	include("metrostroi_scoreboard/mscoreboard.lua")
 	
