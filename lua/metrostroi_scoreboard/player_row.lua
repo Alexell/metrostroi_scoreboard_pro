@@ -104,17 +104,16 @@ function PlayerRow:PerformLayout()
 	self.Nick:SizeToContents()
 
 	if ScrW() >= 1600 then
-		self.Ping:SetPos(self:GetWide()-offset-55,11)
+		self.Ping:SetPos(self:GetWide()-offset-60,11)
 		self.Ping:SizeToContents()
 		self.Hours:SetPos(self:GetWide()-offset-105,11)
 		self.Hours:SizeToContents()
-		
 		self.Station:SetPos(self:GetWide()-offset-500,11)
 		self.Station:SetWide(385)
-		self.Train:SetPos(self:GetWide()-offset-675,11)
-		self.Wags:SetPos(self:GetWide()-offset-735,11)
-		self.Route:SetPos(self:GetWide()-offset-805,11)
-		self.Team:SetPos(self:GetWide()-offset-1050,11)
+		self.Train:SetPos(self:GetWide()-offset-735,11)
+		self.Wags:SetPos(self:GetWide()-offset-810,11)
+		self.Route:SetPos(self:GetWide()-offset-900,11)
+		self.Team:SetPos(self:GetWide()-offset-1100,11)
 		self.Team:SetWide(245)
 		self.Nick:SetWide(210)
 	else
@@ -189,13 +188,16 @@ function PlayerRow:UpdatePlayerData()
 	self.Wags:SetText(ply:GetNW2String("MSWagons","-"))
 	self.Train:SetText(GetTrainName(ply:GetNW2String("MSTrainClass","-")))
 	self.Station:SetText(string.format(ply:GetNW2String("MSStation","-"),T("MScoreBoard.Line")))
+	if ply:GetNW2Bool("MSGuestDriving") then
+		self.Train:SetText(T("MScoreBoard.GuestDriving").." "..ply:GetNW2String("MSHostDriver","-"))
+	end	
 
 	if ScrW() >= 1600 then
 		self.Hours:SetText(math.floor(ply:GetUTimeTotalTime()/3600))
 		self.Ping:SetText(ply:Ping())
 	end
 	
-	if (ply:GetNW2Bool("MSPlayerDriving")) then
+	if ply:GetNW2Bool("MSPlayerDriving") then
 		self.Train:SetTextColor(Color(0,0,0,255))
 	else
 		if ply:GetNW2String("MSTrainClass","-") == "-" then

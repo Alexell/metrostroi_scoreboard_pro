@@ -29,6 +29,7 @@ MScoreBoard.Kick = Kick
 MScoreBoard.Kicked = Kicked by server admin
 MScoreBoard.Ban = Ban
 MScoreBoard.PlayerVol = Player Volume
+MScoreBoard.GuestDriving = Driving train of
 
 #ClientPanel
 MSCP.Colors = 색상

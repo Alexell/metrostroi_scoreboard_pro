@@ -29,6 +29,7 @@ MScoreBoard.Kick = Кик
 MScoreBoard.Kicked = Кикнут администратором сервера
 MScoreBoard.Ban = Бан
 MScoreBoard.PlayerVol = Громкость игрока
+MScoreBoard.GuestDriving = Упр. составом
 
 #ClientPanel
 MSCP.Colors = Цвета

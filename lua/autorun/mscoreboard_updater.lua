@@ -20,6 +20,7 @@ if SERVER then
 	
 	-- Получение местоположения by Agent Smith
 	local function GetTrainLoc(train,name_num)
+		if not Metrostroi.StationConfigurations then return "" end
 		local train_station = ""
 		local map_pos
 		local station_pos
@@ -92,6 +93,7 @@ if SERVER then
 	end
 
 	local function GetStationName(st_id,name_num)
+		if not Metrostroi.StationConfigurations then return "" end
 		if Metrostroi.StationConfigurations[st_id] then
 			if Metrostroi.StationConfigurations[st_id].names[name_num] then
 				return Metrostroi.StationConfigurations[st_id].names[name_num]
@@ -138,12 +140,13 @@ if SERVER then
 	
 	timer.Create("MScoreBoard.ServerUpdate",3,0,function()
 		local route
-		local ply
+		local owner
+		local driver
 		for train in pairs(Metrostroi.SpawnedTrains) do
 			if not IsValid(train) then continue end
 			if not table.HasValue(TrainList,train:GetClass()) then continue end
-			ply = train.Owner
-			if not IsValid(ply) then continue end
+			owner = train.Owner
+			if not IsValid(owner) then continue end
 			route = 0
 			if train:GetClass() == "gmod_subway_81-722" or train:GetClass() == "gmod_subway_81-722_3" or train:GetClass() == "gmod_subway_81-722_new" or train:GetClass() == "gmod_subway_81-7175p" then
 				route = train.RouteNumberSys.CurrentRouteNumber
@@ -154,19 +157,34 @@ if SERVER then
 					route = train.RouteNumber.RouteNumber
 				end
 			end
-			ply:SetNW2String("MSRoute",tostring(route))
-			ply:SetNW2String("MSWagons",#train.WagonList)
-			-- ply:SetNW2String("MSTrainClass",train:GetClass())
+			-- owner:SetNW2String("MSTrainClass",train:GetClass())
 			-- костыль для грузового, т.к. у него сзади спавнится номерной мвм
-			if(ply:GetNW2String("MSTrainClass") ~= "gmod_subway_81-717_freight") then ply:SetNW2String("MSTrainClass",train:GetClass()) end
-			ply:SetNW2String("MSStation",BuildStationInfo(train,ply:GetNWString("MSLanguage")))
+			if(owner:GetNW2String("MSTrainClass") ~= "gmod_subway_81-717_freight") then owner:SetNW2String("MSTrainClass",train:GetClass()) end
+			owner:SetNW2String("MSStation",BuildStationInfo(train,owner:GetNWString("MSLanguage")))
+			owner:SetNW2String("MSRoute",tostring(route))
+			owner:SetNW2String("MSWagons",#train.WagonList)			
+			driver = train.DriverSeat:GetPassenger(0) 	-- по-другому не работает, вообще, совсем !
+			if not IsValid(driver) then continue end
+			if driver != owner then
+				driver:SetNW2Bool("MSGuestDriving",true)
+				driver:SetNW2String("MSHostDriver", owner:Nick())
+				if driver:GetNW2String("MSTrainClass") != "gmod_subway_81-717_freight" then driver:SetNW2String("MSTrainClass",train:GetClass()) end
+				driver:SetNW2String("MSStation",BuildStationInfo(train,owner:GetNWString("MSLanguage")))
+				driver:SetNW2String("MSRoute",tostring(route))
+			end
 		end
 		for k, v in pairs(player.GetAll()) do
 			local train = v:GetTrain()
-			if (IsValid(train) and train.DriverSeat == v:GetVehicle() and train.Owner == v) then
+			if IsValid(train) and train.DriverSeat == v:GetVehicle() then
 				v:SetNW2Bool("MSPlayerDriving",true)
 			else
 				v:SetNW2Bool("MSPlayerDriving",false)
+				if v:GetNW2Bool("MSGuestDriving") then
+					v:SetNW2String("MSRoute","-")
+					v:SetNW2String("MSTrainClass","-")
+					v:SetNW2String("MSStation","-")
+					v:SetNW2Bool("MSGuestDriving", false)
+				end
 			end
 		end
 	end)
