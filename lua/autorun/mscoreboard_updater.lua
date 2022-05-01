@@ -9,6 +9,16 @@
 if SERVER then
 	util.AddNetworkString("MScoreBoard.ClientInfo")
 	
+	local function FixedRoute(class,route)
+		local result = "-"
+		if (class ~= "-" and route ~= "-") then
+			local rnum = tonumber(route)
+			if table.HasValue({"gmod_subway_em508","gmod_subway_81-702","gmod_subway_81-703","gmod_subway_81-705_old","gmod_subway_ezh","gmod_subway_ezh3","gmod_subway_ezh3ru1","gmod_subway_81-717_mvm","gmod_subway_81-718","gmod_subway_81-720","gmod_subway_81-720_1","gmod_subway_81-720a","gmod_subway_81-717_freight","gmod_subway_81-717_5a"},class) then rnum = rnum / 10 end
+			result = rnum
+		end
+		return result
+	end
+
 	local TrainList = {}
 	timer.Simple(1.5,function()
 		for _,class in pairs(Metrostroi.TrainClasses) do
@@ -138,28 +148,51 @@ if SERVER then
 		return line_str..station_str
 	end
 	
+	timer.Create("MScoreBoard.RouteNumbersChecker",60,0,function()
+		local tbl = {}
+		for k, v in pairs(player.GetAll()) do
+			local rnumber = tonumber(v:GetNW2String("MSRoute","1000")) or 1000
+			table.insert(tbl, {v, rnumber})
+		end	
+		for k, v in pairs(tbl) do
+			for k2, v2 in pairs(tbl) do
+				if k2 > k and v[1] != v2[1] and v[2] == v2[2] and (v[2] != 1000 and v2[2] != 1000) then 
+					if not v[1]:GetNW2Bool("MSGuestDriving") and not v2[1]:GetNW2Bool("MSGuestDriving") then
+						ULib.tsayColor(nil,false,Color(222, 0, 0), "У игроков "..v[1]:Nick().." и "..v2[1]:Nick().." совпадают номера маршрутов!")
+						ULib.tsayColor(nil,false,Color(222, 0, 0), "Пожалуйста, поменяйте номер маршрута.")
+					end
+				end
+			end
+		end
+	end)
+	
 	timer.Create("MScoreBoard.ServerUpdate",3,0,function()
 		local route
+		local class
 		local owner
 		local driver
 		for train in pairs(Metrostroi.SpawnedTrains) do
 			if not IsValid(train) then continue end
-			if not table.HasValue(TrainList,train:GetClass()) then continue end
+			class = train:GetClass()
+			if not table.HasValue(TrainList,class) then continue end
 			owner = train.Owner
 			if not IsValid(owner) then continue end
 			route = 0
-			if train:GetClass() == "gmod_subway_81-722" or train:GetClass() == "gmod_subway_81-722_3" or train:GetClass() == "gmod_subway_81-722_new" or train:GetClass() == "gmod_subway_81-7175p" then
+			
+			if class == "gmod_subway_81-722" or class == "gmod_subway_81-722_3" or class == "gmod_subway_81-722_new" or class == "gmod_subway_81-7175p" then
 				route = train.RouteNumberSys.CurrentRouteNumber
-			elseif train:GetClass() == "gmod_subway_81-717_6" or train:GetClass() == "gmod_subway_81-740_4" then
+			elseif class == "gmod_subway_81-717_6" or class == "gmod_subway_81-740_4" then
 				route = train.ASNP.RouteNumber
 			else
 				if train.RouteNumber then
 					route = train.RouteNumber.RouteNumber
 				end
 			end
+			route = FixedRoute(class,route)
+			
 			-- owner:SetNW2String("MSTrainClass",train:GetClass())
 			-- костыль для грузового, т.к. у него сзади спавнится номерной мвм
-			if(owner:GetNW2String("MSTrainClass") ~= "gmod_subway_81-717_freight") then owner:SetNW2String("MSTrainClass",train:GetClass()) end
+			if(owner:GetNW2String("MSTrainClass") ~= "gmod_subway_81-717_freight") then owner:SetNW2String("MSTrainClass",class) end
 			owner:SetNW2String("MSStation",BuildStationInfo(train,owner:GetNWString("MSLanguage")))
 			owner:SetNW2String("MSRoute",tostring(route))
 			owner:SetNW2String("MSWagons",#train.WagonList)			
@@ -168,7 +201,7 @@ if SERVER then
 			if driver != owner then
 				driver:SetNW2Bool("MSGuestDriving",true)
 				driver:SetNW2String("MSHostDriver", owner:Nick())
-				if driver:GetNW2String("MSTrainClass") != "gmod_subway_81-717_freight" then driver:SetNW2String("MSTrainClass",train:GetClass()) end
+				if driver:GetNW2String("MSTrainClass") != "gmod_subway_81-717_freight" then driver:SetNW2String("MSTrainClass",class) end
 				driver:SetNW2String("MSStation",BuildStationInfo(train,owner:GetNWString("MSLanguage")))
 				driver:SetNW2String("MSRoute",tostring(route))
 			end
