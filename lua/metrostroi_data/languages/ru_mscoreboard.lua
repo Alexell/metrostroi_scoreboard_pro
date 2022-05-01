@@ -30,6 +30,10 @@ MScoreBoard.Kicked = Кикнут администратором сервера
 MScoreBoard.Ban = Бан
 MScoreBoard.PlayerVol = Громкость игрока
 MScoreBoard.GuestDriving = Упр. составом
+MScoreBoard.And = и
+MScoreBoard.Players2 = У игроков
+MScoreBoard.EqualRoute = совпадают номера маршрутов
+MScoreBoard.ChangeRoute = Пожалуйста, поменяйте номер маршрута
 
 #ClientPanel
 MSCP.Colors = Цвета

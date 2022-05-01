@@ -30,6 +30,10 @@ MScoreBoard.Kicked = Kicked by server admin
 MScoreBoard.Ban = Ban
 MScoreBoard.PlayerVol = Player Volume
 MScoreBoard.GuestDriving = Driving train of
+MScoreBoard.And = and
+MScoreBoard.Players2 = Players
+MScoreBoard.EqualRoute = have equal route numbers
+MScoreBoard.ChangeRoute = Please, change your route numbers
 
 #ClientPanel
 MSCP.Colors = 색상

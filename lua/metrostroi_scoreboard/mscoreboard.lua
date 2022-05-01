@@ -432,3 +432,10 @@ function MScoreBoard:Show()
 		gui.EnableScreenClicker(false)
 	end
 end
+
+net.Receive("MScoreBoard.EqualRoutes",function(len,ply)
+	local nick1 = net.ReadString()
+	local nick2 = net.ReadString()
+	chat.AddText(Color(222, 0, 0),T("MScoreBoard.Players2").." "..nick1.." "..T("MScoreBoard.And").." "..nick2.." "..T("MScoreBoard.EqualRoute").."!")
+	chat.AddText(Color(222, 0, 0),T("MScoreBoard.ChangeRoute")..".")
+end)

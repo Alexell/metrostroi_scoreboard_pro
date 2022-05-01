@@ -8,6 +8,7 @@
 
 if SERVER then
 	util.AddNetworkString("MScoreBoard.ClientInfo")
+	util.AddNetworkString("MScoreBoard.EqualRoutes")
 	
 	local function FixedRoute(class,route)
 		local result = "-"
@@ -158,8 +159,10 @@ if SERVER then
 			for k2, v2 in pairs(tbl) do
 				if k2 > k and v[1] != v2[1] and v[2] == v2[2] and (v[2] != 1000 and v2[2] != 1000) then 
 					if not v[1]:GetNW2Bool("MSGuestDriving") and not v2[1]:GetNW2Bool("MSGuestDriving") then
-						ULib.tsayColor(nil,false,Color(222, 0, 0), "У игроков "..v[1]:Nick().." и "..v2[1]:Nick().." совпадают номера маршрутов!")
-						ULib.tsayColor(nil,false,Color(222, 0, 0), "Пожалуйста, поменяйте номер маршрута.")
+						net.Start("MScoreBoard.EqualRoutes")
+							net.WriteString(v[1]:Nick())
+							net.WriteString(v2[1]:Nick())
+						net.Broadcast()
 					end
 				end
 			end
