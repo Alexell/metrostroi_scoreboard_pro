@@ -72,10 +72,10 @@ function PlayerPanel:PerformLayout()
 	-- левая сторона
 	local offsetL = 0
 	if (self.BtnWeb) then
-	self.BtnWeb:SetSize(32,32)
-	self.BtnWeb:SetPos(0,0)
-	self.BtnWeb:SetImage("mscoreboard/ms_profile_web.png")
-	offsetL = offsetL + self.BtnWeb:GetWide() + 5
+		self.BtnWeb:SetSize(32,32)
+		self.BtnWeb:SetPos(0,0)
+		self.BtnWeb:SetImage("mscoreboard/ms_profile_web.png")
+		offsetL = offsetL + self.BtnWeb:GetWide() + 5
 	end
 	if (self.BtnPR) then
 		self.BtnPR:SetSize(32,32)

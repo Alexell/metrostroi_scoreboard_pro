@@ -33,11 +33,13 @@ function PlayerRow:Init()
 	self.AvatarBTN.DoClick = function() self.Player:ShowProfile() end
 	self.AvatarIMG = vgui.Create("AvatarImage",self.AvatarBTN)
 	self.AvatarIMG:SetMouseInputEnabled(false)
-	
 	self.Nick = vgui.Create("DLabel",self)
 	self.Nick:SetCursor("hand")
 	self.Nick:SetMouseInputEnabled(true)
 	self.Nick.DoClick = function() self:OpenPanel(not self.Extended) end
+	if (LocalPlayer():GetNW2Bool("MSPlayerStar", false)) then
+		self.Star = vgui.Create("DImage",self)
+	end
 	self.Team = vgui.Create("DLabel",self)
 	self.Route = vgui.Create("DLabel",self)
 	self.Wags = vgui.Create("DLabel",self)
@@ -92,6 +94,11 @@ function PlayerRow:PerformLayout()
 	self.Team:SizeToContents()
 	self.Nick:SetPos(40,11)
 	self.Nick:SizeToContents()
+	if self.Star then
+		self.Star:SetSize(16,16)
+		self.Star:SetPos(40 + self.Nick:GetWide() + 3, 10)
+		self.Star:SetImage("mscoreboard/star.png")
+	end
 
 	if ScrW() >= 1600 then
 		self.Ping:SetPos(self:GetWide()-offset-60,11)

@@ -210,6 +210,9 @@ if SERVER then
 			end
 		end
 		for k, v in pairs(player.GetAll()) do
+			if v.Star then
+				v:SetNW2Bool("MSPlayerStar", true)
+			end
 			local train = v:GetTrain()
 			if IsValid(train) and train.DriverSeat == v:GetVehicle() then
 				v:SetNW2Bool("MSPlayerDriving",true)
