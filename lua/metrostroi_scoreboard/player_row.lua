@@ -37,7 +37,7 @@ function PlayerRow:Init()
 	self.Nick:SetCursor("hand")
 	self.Nick:SetMouseInputEnabled(true)
 	self.Nick.DoClick = function() self:OpenPanel(not self.Extended) end
-	if (LocalPlayer():GetNW2Bool("MSPlayerStar", false)) then
+	if (self.Player:GetNW2Bool("MSPlayerStar", false)) then
 		self.Star = vgui.Create("DImage",self)
 	end
 	self.Team = vgui.Create("DLabel",self)
