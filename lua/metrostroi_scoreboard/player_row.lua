@@ -37,9 +37,7 @@ function PlayerRow:Init()
 	self.Nick:SetCursor("hand")
 	self.Nick:SetMouseInputEnabled(true)
 	self.Nick.DoClick = function() self:OpenPanel(not self.Extended) end
-	if (self.Player:GetNW2Bool("MSPlayerStar", false)) then
-		self.Star = vgui.Create("DImage",self)
-	end
+	self.Star = vgui.Create("DImage",self)
 	self.Team = vgui.Create("DLabel",self)
 	self.Route = vgui.Create("DLabel",self)
 	self.Wags = vgui.Create("DLabel",self)
@@ -94,11 +92,9 @@ function PlayerRow:PerformLayout()
 	self.Team:SizeToContents()
 	self.Nick:SetPos(40,11)
 	self.Nick:SizeToContents()
-	if self.Star then
-		self.Star:SetSize(16,16)
-		self.Star:SetPos(40 + self.Nick:GetWide() + 3, 10)
-		self.Star:SetImage("mscoreboard/star.png")
-	end
+	self.Star:SetSize(16,16)
+	self.Star:SetPos(40 + self.Nick:GetWide() + 3, 10)
+	self.Star:SetImage("mscoreboard/star.png")
 
 	if ScrW() >= 1600 then
 		self.Ping:SetPos(self:GetWide()-offset-60,11)
@@ -202,6 +198,11 @@ function PlayerRow:UpdatePlayerData()
 		else
 			self.Train:SetTextColor(Color(128,128,128))
 		end
+	end
+	if (ply:GetNW2Bool("MSPlayerStar", false)) then
+		self.Star:SetVisible(true)
+	else
+		self.Star:SetVisible(false)
 	end
 	
 	if self.Muted == nil or self.Muted ~= self.Player:IsMuted() then
