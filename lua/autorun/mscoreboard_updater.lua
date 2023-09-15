@@ -27,80 +27,74 @@ if SERVER then
 			if not ENT.Spawner or not ENT.SubwayTrain then continue end
 			table.insert(TrainList,class)
 		end
+		if not MetrostroiAdvanced then CenteringStationPositions() end
 	end)
 	
+	-- by Agent Smith
+	local function CenteringStationPositions()
+		if not Metrostroi.StationConfigurations then return end
+		local centre
+		for k1, v1 in pairs(ents.FindByClass("gmod_track_platform")) do
+			if not Metrostroi.StationConfigurations[v1.StationIndex] then continue end
+			for k2, v2 in pairs(ents.FindByClass("gmod_track_platform")) do
+				if v1.StationIndex == v2.StationIndex and v1.PlatformIndex == 1 and v2.PlatformIndex == 2 then
+					local pos1 = LerpVector(0.5, v1.PlatformStart, v2.PlatformStart)
+					local pos2 = LerpVector(0.5, v1.PlatformEnd, v2.PlatformEnd)
+					if isvector(pos1) and isvector(pos2) then 
+						centre = LerpVector(0.5, pos1, pos2) 
+					end
+					if isvector(centre) and istable(Metrostroi.StationConfigurations[v1.StationIndex].positions) then
+						table.insert(Metrostroi.StationConfigurations[v1.StationIndex].positions, 2, {centre, Angle(0, 0, 33)})
+					end
+				end
+			end
+		end
+	end
+	
 	-- Получение местоположения by Agent Smith
-	local function GetTrainLoc(train,name_num)
-		if not Metrostroi.StationConfigurations then return "" end
-		local train_station = ""
+	local function GetTrainLoc(pos,name_num)
+		local ent_station = "N/A"
 		local map_pos
-		local station_pos
-		local station_posx
-		local station_posy
-		local station_posz
-		local train_pos
-		local train_posx
-		local train_posy
-		local train_posz
-		local get_pos1
-		local get_pos2
 		local radius = 4000 -- Радиус по умолчанию для станций на всех картах
 		local cur_map = game.GetMap()
 		local Sz
 		local S
+		local train_pos = pos
 		
-		train_pos = tostring(train:GetPos())
-		get_pos1 = string.find(train_pos, " ")
-		train_posx = string.sub(train_pos,1,get_pos1)
-		train_posx = tonumber(train_posx)	
-		
-		get_pos2 = string.find(train_pos, " ", get_pos1 + 1)
-		train_posy = string.sub(train_pos,get_pos1,get_pos2)
-		train_posy = tonumber(train_posy)
-		
-		train_posz = string.sub(train_pos,get_pos2 + 1)
-		train_posz = tonumber(train_posz)	
+		radius = radius*radius
 
-		for k, v in pairs(Metrostroi.StationConfigurations) do
-			map_pos = v.positions and v.positions[1]
-			if map_pos and map_pos[1] then
-				station_pos = tostring(map_pos[1])
-				get_pos1 = string.find(station_pos, " ")
-				station_posx = string.sub(station_pos,1,get_pos1)
-				station_posx = tonumber(station_posx)
-				
-				get_pos2 = string.find(station_pos, " ", get_pos1 + 1)
-				station_posy = string.sub(station_pos,get_pos1,get_pos2)
-				station_posy = tonumber(station_posy)
-				
-				station_posz = string.sub(station_pos,get_pos2 + 1)
-				station_posz = tonumber(station_posz)
-				
-				if (cur_map:find("gm_metro_jar_imagine_line"))  then
-					if (v.names[1] == "ДДЭ" or v.names[1] == "Диспетчерская") then continue end
+		if Metrostroi.StationConfigurations then
+			for k, v in pairs(Metrostroi.StationConfigurations) do
+				if isnumber(k) and v.positions[2] then 
+					map_pos = v.positions and v.positions[2] 
+				else 
+					map_pos = v.positions and v.positions[1] 
 				end
-
-				if ((station_posz > 0 and train_posz > 0) or (station_posz < 0 and train_posz < 0)) then -- оба Z больше нуля или меньше нуля
-					Sz = math.max(math.abs(station_posz),math.abs(train_posz)) - math.min(math.abs(station_posz),math.abs(train_posz))
+				if cur_map:find("gm_metro_jar_imagine_line") then
+					if v.names[1] == "ДДЭ" or v.names[1] == "Диспетчерская" then continue end
 				end
-				if ((station_posz < 0 and train_posz > 0) or (station_posz > 0 and train_posz < 0)) then -- один Z больше нуля или меньше нуля
-					Sz = math.abs(train_posz) + math.abs(station_posz)
-				end
-				S = math.sqrt(math.pow((station_posx - train_posx), 2) + math.pow((station_posy - train_posy), 2))
-			
-				-- Поиск ближайшей точки в StationConfigurations с уменьшением радиуса:
-				if (S < radius and Sz < 200) then 
-					if v.names[name_num] then
-						train_station = v.names[name_num]
-					else
-						train_station = v.names[1]
+				if map_pos then
+					S = train_pos:DistToSqr(map_pos[1])
+					if (train_pos.z > 0 and map_pos[1].z < 0) or (train_pos.z < 0 and map_pos[1].z > 0) then
+						Sz = math.abs(train_pos.z) + math.abs(map_pos[1].z)
 					end
-					radius = S
+					if (train_pos.z > 0 and map_pos[1].z > 0) or (train_pos.z < 0 and map_pos[1].z < 0) then
+						Sz = math.abs(train_pos.z - map_pos[1].z)
+					end
+					if S < radius and Sz < 200 then 
+						if v.names[name_num] then
+							ent_station = v.names[name_num]
+						else
+							ent_station = v.names[1]
+						end
+						radius = S
+					end
 				end
 			end
+		else
+			ent_station = "N/A"
 		end
-		if (train_station == "") then train_station = "N/A" end
-		return train_station
+		return ent_station
 	end
 
 	local function GetStationName(st_id,name_num)
@@ -136,7 +130,7 @@ if SERVER then
 				line = train:ReadCell(49167)
 				station_str = prev_st.." - "..next_st
 			else
-				station_str = GetTrainLoc(train,name_num)
+				station_str = GetTrainLoc(train:GetPos(),name_num)
 			end
 		end
 		if line ~= 0 then
