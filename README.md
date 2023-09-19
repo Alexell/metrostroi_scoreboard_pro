@@ -4,7 +4,7 @@
 
 **Website:** https://alexell.ru/
  
-![Metrostroi Scoreboard Pro](https://mss-project.org/images/addons/metrostroi_scoreboard_pro.jpg)
+![Metrostroi Scoreboard Pro](https://mss-project.org/images/addons/metrostroi_scoreboard.jpg)
 
 **Описание:**
 
