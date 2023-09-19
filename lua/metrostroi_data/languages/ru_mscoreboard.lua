@@ -10,6 +10,8 @@ Entities.gmod_subway_ezh3ru1.Name = 81-710 (Еж3 РУ1)
 Entities.gmod_subway_81-540_2k.Name = 81-540.2К (Номерной СПБ)
 Entities.gmod_subway_81-540_8.Name = 81-540.8 (Номерной СПБ)
 Entities.gmod_subway_81-717_freight.Name = 81-717 (Грузовой СПБ)
+Entities.gmod_subway_81-722_new.Name = 81-722 (Юбилейный)
+Entities.gmod_subway_81-722_3.Name = 81-722.3 (Юбилейный)
 
 #MScoreBoard
 MScoreBoard.CLTime = Ваше время

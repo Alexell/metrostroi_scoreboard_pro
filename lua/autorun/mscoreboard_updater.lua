@@ -14,7 +14,7 @@ if SERVER then
 		local result = "-"
 		if (class ~= "-" and route ~= "-") then
 			local rnum = tonumber(route)
-			if table.HasValue({"gmod_subway_em508","gmod_subway_81-702","gmod_subway_81-703","gmod_subway_81-705_old","gmod_subway_ezh","gmod_subway_ezh3","gmod_subway_ezh3ru1","gmod_subway_81-717_mvm","gmod_subway_81-718","gmod_subway_81-720","gmod_subway_81-720_1","gmod_subway_81-720a","gmod_subway_81-717_freight","gmod_subway_81-717_5a"},class) then rnum = rnum / 10 end
+			if table.HasValue({"gmod_subway_em508","gmod_subway_81-702","gmod_subway_81-703","gmod_subway_81-705_old","gmod_subway_ezh","gmod_subway_ezh3","gmod_subway_ezh3ru1","gmod_subway_81-717_mvm","gmod_subway_81-718","gmod_subway_81-720","gmod_subway_81-720_1","gmod_subway_81-720a","gmod_subway_81-717_freight","gmod_subway_81-717_5a", "gmod_subway_81-717_ars_minsk"},class) then rnum = rnum / 10 end
 			result = rnum
 		end
 		return result
@@ -24,7 +24,7 @@ if SERVER then
 	timer.Simple(1.5,function()
 		for _,class in pairs(Metrostroi.TrainClasses) do
 			local ENT = scripted_ents.Get(class)
-			if not ENT.Spawner or not ENT.SubwayTrain then continue end
+			if not class:find("717_ars_minsk") and (not ENT.Spawner or not ENT.SubwayTrain) then continue end
 			table.insert(TrainList,class)
 		end
 		if not MetrostroiAdvanced then CenteringStationPositions() end
@@ -51,7 +51,7 @@ if SERVER then
 		end
 	end
 	
-	-- Получение местоположения by Agent Smith
+	-- by Agent Smith
 	local function GetTrainLoc(pos,name_num)
 		local ent_station = "N/A"
 		local map_pos
@@ -164,21 +164,16 @@ if SERVER then
 	end)
 	
 	timer.Create("MScoreBoard.ServerUpdate",3,0,function()
-		local route
-		local class
-		local owner
-		local driver
 		for train in pairs(Metrostroi.SpawnedTrains) do
 			if not IsValid(train) then continue end
-			class = train:GetClass()
+			local class = train:GetClass()
 			if not table.HasValue(TrainList,class) then continue end
-			owner = train.Owner
+			local owner = train.Owner
 			if not IsValid(owner) then continue end
-			route = 0
-			
-			if class == "gmod_subway_81-722" or class == "gmod_subway_81-722_3" or class == "gmod_subway_81-722_new" or class == "gmod_subway_81-7175p" then
+			local route = 0
+			if class:find("722") or class:find("7175p") then
 				route = train.RouteNumberSys.CurrentRouteNumber
-			elseif class == "gmod_subway_81-717_6" or class == "gmod_subway_81-740_4" then
+			elseif class:find("717_6") or class:find("740_4") then
 				route = train.ASNP.RouteNumber
 			else
 				if train.RouteNumber then
@@ -189,16 +184,16 @@ if SERVER then
 			
 			-- owner:SetNW2String("MSTrainClass",train:GetClass())
 			-- костыль для грузового, т.к. у него сзади спавнится номерной мвм
-			if(owner:GetNW2String("MSTrainClass") ~= "gmod_subway_81-717_freight") then owner:SetNW2String("MSTrainClass",class) end
+			if not owner:GetNW2String("MSTrainClass"):find("717_freight") then owner:SetNW2String("MSTrainClass",class) end
 			owner:SetNW2String("MSStation",BuildStationInfo(train,owner:GetNWString("MSLanguage")))
 			owner:SetNW2String("MSRoute",tostring(route))
 			owner:SetNW2String("MSWagons",#train.WagonList)			
-			driver = train.DriverSeat:GetPassenger(0) 	-- по-другому не работает, вообще, совсем !
+			local driver = train.DriverSeat:GetPassenger(0) 	-- по-другому не работает, вообще, совсем !
 			if not IsValid(driver) then continue end
 			if driver != owner then
 				driver:SetNW2Bool("MSGuestDriving",true)
 				driver:SetNW2String("MSHostDriver", owner:Nick())
-				if driver:GetNW2String("MSTrainClass") != "gmod_subway_81-717_freight" then driver:SetNW2String("MSTrainClass",class) end
+				if not driver:GetNW2String("MSTrainClass"):find("717_freight") then driver:SetNW2String("MSTrainClass",class) end
 				driver:SetNW2String("MSStation",BuildStationInfo(train,owner:GetNWString("MSLanguage")))
 				driver:SetNW2String("MSRoute",tostring(route))
 			end
