@@ -27,15 +27,15 @@ MScoreBoard.Hours = 시간
 MScoreBoard.Ping = 핑
 MScoreBoard.Players = 플레이어
 MScoreBoard.TransPass = %s명의 승객을 수송하였습니다.
-MScoreBoard.Kick = Kick
-MScoreBoard.Kicked = Kicked by server admin
-MScoreBoard.Ban = Ban
-MScoreBoard.PlayerVol = Player Volume
-MScoreBoard.GuestDriving = Driving train of
-MScoreBoard.And = and
-MScoreBoard.Players2 = Players
-MScoreBoard.EqualRoute = have equal route numbers
-MScoreBoard.ChangeRoute = Please, change your route numbers
+MScoreBoard.Kick = 킥
+MScoreBoard.Kicked = 관리자에 의해 킥 당하였습니다.
+MScoreBoard.Ban = 밴
+MScoreBoard.PlayerVol = 사용자 음량
+MScoreBoard.GuestDriving = 다른 사람의 차량을 운전 중 :
+MScoreBoard.And = 와(과)
+MScoreBoard.Players2 = 사용자
+MScoreBoard.EqualRoute = 이(가) 중복된 열번을 사용중입니다.
+MScoreBoard.ChangeRoute = 열번을 변경해주세요.
 
 #ClientPanel
 MSCP.Colors = 색상
