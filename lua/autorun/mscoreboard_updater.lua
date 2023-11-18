@@ -172,9 +172,13 @@ if SERVER then
 			if not IsValid(owner) then continue end
 			local route = 0
 			if class:find("722") or class:find("7175p") then
-				route = train.RouteNumberSys.CurrentRouteNumber
+				if train.RouteNumberSys then
+					route = train.RouteNumberSys.CurrentRouteNumber
+				end
 			elseif class:find("717_6") or class:find("740_4") then
-				route = train.ASNP.RouteNumber
+				if train.ASNP then
+					route = train.ASNP.RouteNumber
+				end
 			else
 				if train.RouteNumber then
 					route = train.RouteNumber.RouteNumber
@@ -188,7 +192,7 @@ if SERVER then
 			owner:SetNW2String("MSStation",BuildStationInfo(train,owner:GetNWString("MSLanguage")))
 			owner:SetNW2String("MSRoute",tostring(route))
 			owner:SetNW2String("MSWagons",#train.WagonList)			
-			local driver = train.DriverSeat:GetPassenger(0) 	-- по-другому не работает, вообще, совсем !
+			local driver = train.DriverSeat:GetPassenger(0)
 			if not IsValid(driver) then continue end
 			if driver != owner then
 				driver:SetNW2Bool("MSGuestDriving",true)
