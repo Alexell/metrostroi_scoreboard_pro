@@ -1,7 +1,7 @@
 return [[
 [tr]
 
-AuthorTextMScoreBoard = Alexell (STEAM_0:1:125018747)
+AuthorTextMScoreBoard = Matt (STEAM_0:1:241718138)
 
 #Train entities
 Entities.gmod_subway_81-540.Name = 81 -540 (Nomernoi SPb)
