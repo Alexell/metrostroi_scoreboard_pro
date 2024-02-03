@@ -19,16 +19,6 @@ if SERVER then
 		end
 		return result
 	end
-
-	local TrainList = {}
-	timer.Simple(1.5,function()
-		for _,class in pairs(Metrostroi.TrainClasses) do
-			local ENT = scripted_ents.Get(class)
-			if not class:find("717_ars_minsk") and (not ENT.Spawner or not ENT.SubwayTrain) then continue end
-			table.insert(TrainList,class)
-		end
-		if not MetrostroiAdvanced then CenteringStationPositions() end
-	end)
 	
 	-- by Agent Smith
 	local function CenteringStationPositions()
@@ -50,6 +40,16 @@ if SERVER then
 			end
 		end
 	end
+
+	local TrainList = {}
+	timer.Simple(1.5,function()
+		for _,class in pairs(Metrostroi.TrainClasses) do
+			local ENT = scripted_ents.Get(class)
+			if not class:find("717_ars_minsk") and (not ENT.Spawner or not ENT.SubwayTrain) then continue end
+			table.insert(TrainList,class)
+		end
+		if not MetrostroiAdvanced then CenteringStationPositions() end
+	end)
 	
 	-- by Agent Smith
 	local function GetTrainLoc(pos,name_num)
