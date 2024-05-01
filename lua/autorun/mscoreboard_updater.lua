@@ -52,14 +52,13 @@ if SERVER then
 	end)
 	
 	-- by Agent Smith
-	local function GetTrainLoc(pos,name_num)
+	local function GetLocation(pos,name_num)
 		local ent_station = "N/A"
 		local map_pos
 		local radius = 4000 -- Радиус по умолчанию для станций на всех картах
 		local cur_map = game.GetMap()
 		local Sz
 		local S
-		local train_pos = pos
 		
 		radius = radius*radius
 
@@ -74,12 +73,12 @@ if SERVER then
 					if v.names[1] == "ДДЭ" or v.names[1] == "Диспетчерская" then continue end
 				end
 				if map_pos then
-					S = train_pos:DistToSqr(map_pos[1])
-					if (train_pos.z > 0 and map_pos[1].z < 0) or (train_pos.z < 0 and map_pos[1].z > 0) then
-						Sz = math.abs(train_pos.z) + math.abs(map_pos[1].z)
+					S = pos:DistToSqr(map_pos[1])
+					if (pos.z > 0 and map_pos[1].z < 0) or (pos.z < 0 and map_pos[1].z > 0) then
+						Sz = math.abs(pos.z) + math.abs(map_pos[1].z)
 					end
-					if (train_pos.z > 0 and map_pos[1].z > 0) or (train_pos.z < 0 and map_pos[1].z < 0) then
-						Sz = math.abs(train_pos.z - map_pos[1].z)
+					if (pos.z > 0 and map_pos[1].z > 0) or (pos.z < 0 and map_pos[1].z < 0) then
+						Sz = math.abs(pos.z - map_pos[1].z)
 					end
 					if S < radius and Sz < 200 then 
 						if v.names[name_num] then
@@ -130,7 +129,7 @@ if SERVER then
 				line = train:ReadCell(49167)
 				station_str = prev_st.." - "..next_st
 			else
-				station_str = GetTrainLoc(train:GetPos(),name_num)
+				station_str = GetLocation(train:GetPos(),name_num)
 			end
 		end
 		if line ~= 0 then
@@ -170,6 +169,7 @@ if SERVER then
 			if not table.HasValue(TrainList,class) then continue end
 			local owner = train.Owner
 			if not IsValid(owner) then continue end
+			local lang = owner:GetNW2String("MSLanguage")
 			local route = 0
 			if class:find("722") or class:find("7175p") then
 				if train.RouteNumberSys then
@@ -189,7 +189,7 @@ if SERVER then
 			-- owner:SetNW2String("MSTrainClass",train:GetClass())
 			-- костыль для грузового, т.к. у него сзади спавнится номерной мвм
 			if not owner:GetNW2String("MSTrainClass"):find("717_freight") then owner:SetNW2String("MSTrainClass",class) end
-			owner:SetNW2String("MSStation",BuildStationInfo(train,owner:GetNWString("MSLanguage")))
+			owner:SetNW2String("MSStation",BuildStationInfo(train,lang))
 			owner:SetNW2String("MSRoute",tostring(route))
 			owner:SetNW2String("MSWagons",#train.WagonList)			
 			local driver = train.DriverSeat:GetPassenger(0)
@@ -198,7 +198,7 @@ if SERVER then
 				driver:SetNW2Bool("MSGuestDriving",true)
 				driver:SetNW2String("MSHostDriver", owner:Nick())
 				if not driver:GetNW2String("MSTrainClass"):find("717_freight") then driver:SetNW2String("MSTrainClass",class) end
-				driver:SetNW2String("MSStation",BuildStationInfo(train,owner:GetNWString("MSLanguage")))
+				driver:SetNW2String("MSStation",BuildStationInfo(train,lang))
 				driver:SetNW2String("MSRoute",tostring(route))
 			end
 		end
@@ -217,6 +217,12 @@ if SERVER then
 					v:SetNW2String("MSStation","-")
 					v:SetNW2Bool("MSGuestDriving", false)
 				end
+				if not v:GetNW2String("MSTrainClass"):find("subway") then
+					local lang = v:GetNW2String("MSLanguage")
+					local name_num = 1
+					if lang ~= "ru" then name_num = 2 end
+					v:SetNW2String("MSStation", GetLocation(v:GetPos(), name_num))
+				end
 			end
 		end
 	end)
@@ -234,7 +240,7 @@ if SERVER then
 
 	net.Receive("MScoreBoard.ClientInfo",function(ln,ply)
 		if not IsValid(ply) then return end
-		ply:SetNWString("MSLanguage",net.ReadString())
+		ply:SetNW2String("MSLanguage",net.ReadString())
 	end)
 else
 	hook.Add("OnEntityCreated","MScoreBoard.GetPlayerLang",function()
