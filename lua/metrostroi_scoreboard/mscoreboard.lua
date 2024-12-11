@@ -257,7 +257,7 @@ function Board:PerformLayout()
 	self.Nick:SetPos(63, 102)
 
 	if ScrW() >= 1600 then
-		self.Ping:SetPos(self.Frame:GetWide()-60-2, 102)
+		self.Ping:SetPos(self.Frame:GetWide()-55-2, 102)
 		self.Hours:SetPos(self.Frame:GetWide()-105, 102)
 		self.Station:SetPos(self.Frame:GetWide()-500-2, 102)
 		self.Train:SetPos(self.Frame:GetWide()-735-2, 102)

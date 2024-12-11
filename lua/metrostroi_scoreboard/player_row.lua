@@ -97,7 +97,7 @@ function PlayerRow:PerformLayout()
 	self.Star:SetImage("mscoreboard/star.png")
 
 	if ScrW() >= 1600 then
-		self.Ping:SetPos(self:GetWide()-offset-60,11)
+		self.Ping:SetPos(self:GetWide()-offset-55,11)
 		self.Ping:SizeToContents()
 		self.Hours:SetPos(self:GetWide()-offset-105,11)
 		self.Hours:SizeToContents()
@@ -172,6 +172,54 @@ function PlayerRow:OpenPanel(val)
 	self.Extended = val
 end
 
+local function GetStationName(station,position)
+	local result = "-"
+	if Metrostroi.StationConfigurations and Metrostroi.StationConfigurations[station] then
+		if Metrostroi.StationConfigurations[station].names[position] then
+			result = Metrostroi.StationConfigurations[station].names[position]
+		else
+			result = Metrostroi.StationConfigurations[station].names[1]
+		end
+	end
+	return result
+end
+
+local function GetLocationString(input)
+	local data = {}
+	for _, str in ipairs(string.Explode(",",input)) do
+		local num = tonumber(str)
+		if num then
+			table.insert(data, num)
+		else
+			table.insert(data, str)
+		end
+	end
+	local lang = GetConVar("metrostroi_language"):GetString()
+	local pos = 1
+	if lang ~= "ru" then pos = 2 end
+	local track = data[1]
+	local track_str = ""
+	local result = "-"
+	if #data > 1 then
+		if track > 0 then
+			if lang == "ru" then
+				track_str = "["..track.." %s] "
+			else
+				track_str = "[%s "..track.."] "
+			end
+		end
+		if #data == 2 then
+			result = "N/A"
+			if (isnumber(data[2]) and data[2] > 0) or isstring(data[2]) then
+				result = track_str..GetStationName(data[2],pos)
+			end
+		elseif #data == 3 then
+			result = track_str..GetStationName(data[2],pos).." - "..GetStationName(data[3],pos)
+		end
+	end
+	return result
+end
+
 function PlayerRow:UpdatePlayerData()
 	local ply = self.Player
 	if not IsValid(ply) then MScoreBoard.Panel:InvalidateLayout() return end
@@ -180,7 +228,7 @@ function PlayerRow:UpdatePlayerData()
 	self.Route:SetText(ply:GetNW2String("MSRoute","-"))
 	self.Wags:SetText(ply:GetNW2String("MSWagons","-"))
 	self.Train:SetText(GetTrainName(ply:GetNW2String("MSTrainClass","-")))
-	self.Station:SetText(string.format(ply:GetNW2String("MSStation","-"),T("MScoreBoard.Line")))
+	self.Station:SetText(string.format(GetLocationString(ply:GetNW2String("MSStation","0")),T("MScoreBoard.Track")))
 	if ply:GetNW2Bool("MSGuestDriving") then
 		self.Train:SetText(T("MScoreBoard.GuestDriving").." "..ply:GetNW2String("MSHostDriver","-"))
 	end	
