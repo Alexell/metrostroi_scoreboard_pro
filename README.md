@@ -1,6 +1,8 @@
 # Metrostroi Scoreboard Pro
 
-**Created by:** Alexell
+**Версия: 2.2**
+
+**Разработчик:** [Alexell](https://steamcommunity.com/profiles/76561198210303223)
 
 **Website:** https://alexell.ru/
  
