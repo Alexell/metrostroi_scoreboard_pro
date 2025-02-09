@@ -12,6 +12,7 @@ Entities.gmod_subway_81-540_8.Name = 81 -540 (Nomernoi SPb)
 Entities.gmod_subway_81-717_freight.Name = 81 -717 (Navlun SPb)
 Entities.gmod_subway_81-722_new.Name = 81 -722 (Yubileyniy)
 Entities.gmod_subway_81-722_3.Name = 81-722.3 (Yubileyniy)
+Entities.gmod_subway_am.Name = 81-700 (A)
 
 #MScoreBoard
 MScoreBoard.CLTime = Zamanınız
