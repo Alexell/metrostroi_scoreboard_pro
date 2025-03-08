@@ -12,7 +12,7 @@ Entities.gmod_subway_81-540_8.Name = 81-540.8 (Номерной СПБ)
 Entities.gmod_subway_81-717_freight.Name = 81-717 (Грузовой СПБ)
 Entities.gmod_subway_81-722_new.Name = 81-722 (Юбилейный)
 Entities.gmod_subway_81-722_3.Name = 81-722.3 (Юбилейный)
-Entities.gmod_subway_am.Name = 81-700 (А)
+Entities.gmod_subway_am.Name = Вагоны типа Ам/Ап
 
 #MScoreBoard
 MScoreBoard.CLTime = Ваше время
