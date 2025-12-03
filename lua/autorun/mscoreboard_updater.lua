@@ -142,7 +142,7 @@ if SERVER then
 			local owner = train.Owner
 			if not IsValid(owner) then continue end
 			
-			local route = 0
+			local route = "-"
 			if class:find("722") or class:find("7175p") then
 				if train.RouteNumberSys then
 					route = train.RouteNumberSys.CurrentRouteNumber
