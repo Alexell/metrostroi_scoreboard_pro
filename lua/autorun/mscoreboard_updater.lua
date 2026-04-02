@@ -143,7 +143,11 @@ if SERVER then
 			if not IsValid(owner) then continue end
 			
 			local route = "-"
-			if class:find("722") or class:find("7175p") then
+			if class:find("765") then
+				if train.BUIK then
+					route = train.BUIK.RouteNumber
+				end
+			elseif class:find("722") or class:find("725") or class:find("7175p") then
 				if train.RouteNumberSys then
 					route = train.RouteNumberSys.CurrentRouteNumber
 				end
