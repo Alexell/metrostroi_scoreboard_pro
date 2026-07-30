@@ -10,10 +10,10 @@ if SERVER then
 	util.AddNetworkString("MScoreBoard.ClientInfo")
 	util.AddNetworkString("MScoreBoard.EqualRoutes")
 	
-	local function FixedRoute(class,route)
+	local function FixedRoute(class, route)
+		local rnum = tonumber(route) or 0
 		local result = "-"
-		if (class ~= "-" and route ~= "-") then
-			local rnum = tonumber(route)
+		if (class ~= "-" and rnum > 0) then
 			if table.HasValue({"gmod_subway_em508","gmod_subway_81-702","gmod_subway_81-703","gmod_subway_81-705_old","gmod_subway_ezh","gmod_subway_ezh3","gmod_subway_ezh3ru1","gmod_subway_81-717_mvm","gmod_subway_81-718","gmod_subway_81-720","gmod_subway_81-720_1","gmod_subway_81-720a","gmod_subway_81-717_freight","gmod_subway_81-717_5a", "gmod_subway_81-717_ars_minsk", "gmod_subway_am", "gmod_subway_81-7401", "gmod_subway_81-7404"},class) then rnum = rnum / 10 end
 			result = rnum
 		end
@@ -151,7 +151,7 @@ if SERVER then
 				if train.RouteNumberSys then
 					route = train.RouteNumberSys.CurrentRouteNumber
 				end
-			elseif class:find("717_6") or class:find("740_4") then
+			elseif class:find("717_6") then
 				if train.ASNP then
 					route = train.ASNP.RouteNumber
 				end
@@ -160,7 +160,7 @@ if SERVER then
 					route = train.RouteNumber.RouteNumber
 				end
 			end
-			route = FixedRoute(class,route)
+			route = FixedRoute(class, route)
 			
 			-- owner:SetNW2String("MSTrainClass",train:GetClass())
 			-- костыль для грузового, т.к. у него сзади спавнится номерной мвм
